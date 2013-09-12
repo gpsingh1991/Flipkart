@@ -73,9 +73,9 @@ height=10 width=600>
             <a href="file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html" onclick="window.open('file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-            <!-- <a class="login-required" href="/account/">Account</a>&nbsp;&nbsp;|&nbsp;&nbsp; -->
-            <a class="login-required" href="pages\login_fk.html">Cart</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="track-order-details-required">Order</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+           
+            <a  href=>Cart</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <a >Order</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html" onclick="window.open('file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">Login</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="file:///C:/Users/Sonan/Desktop/editor/pages/reg1.html?" onclick="window.open('file:///C:/Users/Sonan/Desktop/editor/pages/reg1.html?','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">Signup</a>
         </div>
