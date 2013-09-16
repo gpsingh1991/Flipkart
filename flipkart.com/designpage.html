@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+
+	<title> Welcome to flipkart.com!</title>
+	
+	
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+function display(){
+    alert("selected item is laptop");
+    var a=document.getElementById("laptops").value;
+    if(a=="1")
+    {
+        alert("one is selected");
+    }
+}
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+window.onload = function() {
+  if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+  }
+  db.transaction(function(tx) {
+    tx.executeSql("drop table if exists categories");
+    tx.executeSql("create table if not exists categories ("
+      + "categoryid integer primary key,"
+      + "categoryname text,"
+      + "createddate Date"
+      + ")",null,null, logger);  
+    tx.executeSql("create table if not exists cart("
+        + "cartid integer primary key autoincrement,"
+        + "userid integer,"
+        + "price integer,"
+        + "quantity integer,"
+        + "createddate Date"
+        +")",null,null,logger);
+    insertRecords();
+    // showRecords();
+    console.log("done");
+  });
+    // function status(status) {
+  //   document.getElementById("status").innerHTML = status;
+  // }
+  function logger(tx, error) {
+    console.log("Error", error.message);
+  }
+  function logArguments() {
+    console.log(arguments);
+  }
+  function $_(selector) {
+    return document.querySelector(selector);
+  }
+
+  // $_("#save").onclick = function() {
+  //   db.transaction(function(tx) {
+  //     console.log("running2");
+  //     tx.executeSql(
+  //         "insert into registration (name, last , dob, address, username, password, confirmpassword) "
+  //       + "values (?,?,?,?,?,?,?)", [$_("#first_name").value, $_("#last_name").value, $_("#dob").value, $_("#add").value, $_("#username").value, $_("#pwd").value, $_("#pwd1").value],
+  //       null, logger
+  //     );
+  //     console.log("done");
+  //     showRecords();
+  //   });
+  // };
+
+  // $_("#population").onkeyup = function(ev) {
+  //   if (ev.keyCode==13) $_("#save").onclick();
+  // };
+
+  // $_("#records").onclick = function(ev) {
+  //   if (ev.target.className!="remove") return;
+  //   var recordID = ev.target.id;
+  //   console.log(recordID);
+  //   db.transaction(function(tx) {
+  //     tx.executeSql("delete from registration where id=?", [recordID], null, logger);
+  //     showRecords();
+  //   });
+  // }
+
+  function showRecords() {
+    console.log("db", db);
+    html = "";
+    db.transaction(function(tx) {
+      tx.executeSql("select * from registration", [], function(tx, results) {
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          // html+="<button id='"+record.id+"' class='remove'>x</button> "
+          //   +record.name+" - "+record.population + "<br/>";
+        }
+        // $_("#records").innerHTML = html;
+      });
+    });
+  }
+  
+
+  function insertRecords(){
+    console.log("db",db);
+    db.transaction(function(tx){
+        tx.executeSql("insert into categories values(?,?,?) ")
+
+    });
+  }
+
+
+
+
+
+
+};
+    </script>
+  
+
+    <link rel="stylesheet" type="text/css" href="http://img6a.flixcart.com/www/prod/basic-cd05cb9e-nogz.css" />
+    <link href="css/layout.css" rel="stylesheet" type="text/css" />
+        <link href="css/menu.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+
+
+<body class="">
+    <div class="homepg fkart fksk-body line  ">
+
+<div id="fk-mainhead-id" class="new-vd">
+    <div class="fk-mainhead trustBar">  
+<div class="fk-trustBar">
+     <center> 
+<hr> 
+<table background="http://www.angelfire.com/ar/maxine/images/scen5.jpg" 
+height=1 width=1500> 
+<tr><td><center> 
+<font size="1" color="white"> 
+<marquee scrolldelay=200 >Welcome to flipkart.com! Online Shopping India - Shop Online for Books, Mobile Phones, Digital Cameras, Watches & More at Flipkart.com</marquee> 
+</font></center></tr></td></table><hr>
+
+    <div class="gu16 ourWidth">
+        <!--  <center> 
+<hr> 
+<table background="http://www.angelfire.com/ar/maxine/images/scen5.jpg" 
+height=10 width=600> 
+<tr><td><center> 
+<font size="4" color="white"> 
+<marquee>MY MARQUEE</marquee> 
+</font></center></tr></td></table><hr>
+ -->
+     
+
+<!-- 
+        <marquee class="gd-col gu4 fk-text-center" class="gd-col gu4" class="flrt content gd-row"> welcome to flipkart!</marquee> -->
+       <!--  <div class="flrt content gd-row">
+            <div class="gd-col gu4">
+                <a href="/tv-ads#happyShopping"><span class="fk-check rmargin5"></span><span>100% Original Products</span></a>
+            </div>
+            <div class="gd-col gu4 fk-text-center">
+                <a href="/tv-ads#happyShopping"><span class="fk-check rmargin5"></span><span>Cash on Delivery</span></a>
+            </div>
+            <div class="gd-col gu4 fk-text-center">
+                <a href="/tv-ads#happyShopping"><span class="fk-check rmargin5"></span><span>Free & Easy Returns</span></a>
+            </div>
+            <div class="gd-col gu4 text_right">
+                <a href="/tv-ads"><span class="fk-tv rmargin5"></span><span>Watch Our Latest Ad</span></a>
+            </div>
+        </div> -->
+         
+       <!--  <a href="/tv-ads" class="fkKaroLogo"></a> -->
+
+
+    </div>
+</div>                      <div class="fk-content">
+                <div class="unit fk-logo-nav">
+                   
+                    <div class="line fk-logo"> <a href="/"><img src="http://img6a.flixcart.com/www/prod/images/flipkart_india-5ef1726d.png" alt="Flipkart.com: Online Shopping India" title="Online Shopping India | Flipkart.com" class="fk-logo-img"/></a></div>
+                </div>
+                <div class="fk-info-links-section">
+                    <div class="fk-info-links">
+                                                    
+                                    <div class="line bmargin 125">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+                        class="fk-cstext">24x7 Customer Support <b></b></span>
+                    &nbsp;-&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/s/contact">Contact Us</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html" onclick="window.open('file:///C:/Users/Sonan/Desktop/editor/pages/login_fk.html','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+            <!-- <a class="login-required" href="/account/">Account</a>&nbsp;&nbsp;|&nbsp;&nbsp; -->
+            <a href="images/kart.png" title="Digital Cart" onclick="get_detail_banner_popup(null,'digital-cart-tab'); return false;">Digital Cart (<span class="digital-cart-count" id="header_digital_cart_count">0</span>)</a>
+
+         <!--  try out -->  
+           <!-- <div class="mod-shoppingCart" >
+<div class="carttitle" id="topcart">
+<a id="topcart_total" class="top_cart_total" href="flow.php" title="Cart" rel="nofollow">Cart (0)<span></span></a><ul class="empty_cart">Your cart is empty.</ul></div>
+<script>
+  function dg_callback(result){
+    document.getElementById('topcart').innerHTML = result;
+  }
+  function drop_goods(id){
+    Ajax.call('flow.php?step=drop_goods_ajax&id='+id, '', dg_callback, 'GET', 'TEXT');
+  }
+</script>
+ -->
+
+ 
+
+
+            <a class="login-required" href="pages\login.html">Cart</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="track-order-details-required">Order</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="login.html" onclick="window.open('login.html','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">Login</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="registrationpage.html" onclick="window.open('registrationpage.html','popup','width=500,height=250,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=150,top=150'); return false">Signup</a>
+             <a href="" class="fk-logo-img"><img src="images\cart.png" class="fk-logo-img"></a>
+
+             <!--  </div>
+                        <div id="fk-wallet-login-message" class="fk-hidden">
+                            <div class="line fksd-pheadertext boldtext bmargin10">Wallet</div>
+                            <div class="line bmargin20 fk-normalfont">
+                                The Wallet is a pre-paid credit system, launched by Flipkart.com, for a hassle free shopping experience.
+                                <ul class="lpadding20 fk-ul-disc">
+                                    <li>Make one payment and shop multiple times</li>
+                                    <li>Simpler and faster check-out process</li>
+                                    <li>No more worries of failed payment transactions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fclear"></div>
+                </div>
+            <div class="fclear scroll-limit"></div>
+            <div class="fk-hsearch-patch ">
+                <div class="unit">
+                    <div class="flyout-menu" id="flyout-menu">
+    <ul class="menu-dd">
+        <li class="all-ctg-btn btnactive" align="center">
+             <div class="all-ctg-wrapper" align="center">
+                 <!-- <a class="all-ctg-link"> -->
+                   <!--   All Categories
+                     <select name="mydropdown" default=" All Categories">
+<option value="Milk">Fresh Milk</option>
+<option value="Cheese">Old Cheese</option>
+<option value="Bread">Hot Bread</option>
+</select>
+                
+                <div class="arrow-dd "> -->
+ 
+
+
+
+                     <div class="container">
+
+            <ul id="nav">
+                <li><a href="designpage.html">Home</a></li>
+                <li><a class="hsubs" href="#"  font-size:1122px;>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Mobiles</a>
+                    <ul class="subs">
+                      <!--   Age <select name="age" id="agebox" onchange="calculate()">
+<option value="0">--select--</option>
+<option value="1">21-59</option>
+<option value="2">60-79</option>
+<option value="3">Above 80 </option>
+</select><br/>
+
+ -->
+                  <li><a href="http://www.gsmarena.com/samsung_i9500_galaxy_s4-5125.php">Samsung</a></li>
+
+                        <li><a href="#" value="0">Nokia</a></li>
+                        <li><a href="#" value="1">Sony Xperia</a></li>
+                        <li><a href="#">Ericson</a></li>
+                        
+                    </ul>
+                </li>
+
+
+               <!--  <li><select name="" id="dropdown1" onchange="display()">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;bags</a>
+
+                    <ul class="subs">
+                        <li><a href="#">Submenu 2-1</a></li>
+                        <li><a href="#">Submenu 2-2</a></li>
+                        <li><a href="#">Submenu 2-3</a></li>
+                        <li><a href="#">Submenu 2-4</a></li>
+                        <li><a href="#">Submenu 2-5</a></li>
+                        <li><a href="#">Submenu 2-6</a></li>
+                        <li><a href="#">Submenu 2-7</a></li>
+                        <li><a href="#">Submenu 2-8</a></li>
+                    </ul>
+                </li>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+
+
+
+
+                <li><a class="hsubs" href="#" id="laptops" onClick="display()">&nbsp;&nbsp;|&nbsp;&nbsp;Laptops</a>
+                    <ul class="subs">
+                        <li><a href="#" id="laptops" value="1">lenovo</a></li>
+                        <li><a href="#">acer</a></li>
+                        <li><a href="#">sony</a></li>
+                        <li><a href="#">dell</a></li>
+                    
+                    </ul>
+                </li>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+                <li><a class="hsubs" href="#">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Books</a>
+                    <ul class="subs">
+                        <li><a href="#">Fiction & Nonfiction</a></li>
+                        <li><a href="#">Education</a></li>
+                        <li><a href="#">Featured books</a></li>
+                        <li><a href="#">Magazines</a></li>
+                       
+                    </ul>
+                </li>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+                <li><a class="hsubs" href="#">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Watches</a>
+                <ul class="subs">
+                    <li><a href="#">Fastrack</a></li>
+                    <li><a href="#">Zoop</a></li>
+                    <li><a href="#">Titan</a></li>
+                </ul>
+                </li>
+                <div id="lavalamp"></div>
+            </ul>
+
+        </div>
+
+
+
+
+
+                       <!--     <div >
+<select name="mydropdown">
+<option value="Milk">Fresh Milk</option>
+<option value="Cheese">Old Cheese</option>
+<option value="Bread">Hot Bread</option>
+</select>
+</div> -->
+                         <span class="arrow-dd-img fk-inline-block"></span>
+                     </div>
+                 </a>
+             </div>
+             <div id="flyout-cache" class="nav-content ">
+                             </div>
+        </li>
+    </ul>
+</div>
+
+
+
+
+            
+
+
+
+        </body>
+           <!-- <div class="flyout-menu" id="flyout-menu">
+    <ul class="menu-dd">
+        <li class="all-ctg-btn btnactive">
+             <div class="all-ctg-wrapper">
+                 <a class="all-ctg-link">
+                     All Categories
+                     <div class="arrow-dd ">
+                         <span class="arrow-dd-img fk-inline-block"></span>
+                     </div>
+                 </a>
+             </div>
+             <div id="flyout-cache" class="nav-content ">
+                             </div>
+        </li>
+    </ul>
+</div>
+ -->
+    </html>
