@@ -9,24 +9,83 @@
         <link rel="stylesheet" type="text/css" href="css/demo.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+       <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
              <script type="text/javascript">
+             function validateEmail(email)
+{
+ var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+ if (reg.test(email)){
+ return true; }
+ else{
+ return false;
+ }
+} 
+
+
              function validate(){
                //alert("not null");
                 var username=document.getElementById("username").value;
                 var password=document.getElementById("password").value;
                 var confirm_password=document.getElementById("cpassword").value;
+                var date=document.getElementById("dob");
+                var emailField = document.getElementById("email");
+                var passedValidation = true;
+                var emailField = document.getElementById("email");
+                var telephone=document.getElementById("tel");
+                var post=document.getElementById("ptc");
+//                 
+
+
+
                 //alert(confirm_password.length);
                 var range=4;
-                if(username=="" || username<=range){
+                if(username.value==""){
                     alert("enter a valid username!");
+                    return;
+                    // else if(username<=4)
+                    // {
+                    //   alert("password should have more than 4 digits");
+                    // }
                 }
-                if(password=="" || password.length<4){
+                else if(username.length<5)
+                {
+                  alert("username should have minimum 5 characters!");
+                  return;
+
+                }
+                else if(password=="" || password.length<4){
                     alert("enter a valid password!");
+                    return;
                 }
-                 if(confirm_password=="" ||confirm_password!=password){
+                 else if(confirm_password=="" ||confirm_password!=password){
                     alert("password does not match!");
+                    return;
                 }
+                else if(date.value=="" || date.value==null)
+                {
+                  alert("enter a valid date");
+                  date.focus();
+                  return;
+                }
+//                 else if()
+//                 {
+
+// emailField.setCustomValidity(emailField.value + " is invalid! Please try again.");
+//                 }
+else if(isNaN(telephone.value) || telephone.value==="" || telephone.value<=0)
+{
+alert("please enter the telephone number");
+telephone.focus();
+return;
+}
+else if( isNaN(post.value) || post.value===""|| post.value<=0)
+{
+  alert("please enter a valid postalcode");
+  post.focus();
+  return;
+}
        var usernameTextBox = document.getElementById("username");
         var passwordTextBox = document.getElementById("password");
         if (window.localStorage.getItem(usernameTextBox.value)!==null) 
@@ -36,10 +95,27 @@
         }
         window.localStorage.setItem(usernameTextBox.value,passwordTextBox.value);
         location.href="login.html";
-      
+      }
 
 
-             }
+      //jquery
+
+      $(document).ready(function(e){
+ $('#Login').click(function(){ 
+ var email = $('#email').val();
+ if ($.trim(email).length == 0) {
+ alert('Please Enter Valid Email Address');
+ return false;
+ }
+ if (validateEmail(email)) {
+ alert('Valid Email Address');
+ return false;
+ }
+ else {
+ alert('Invalid Email Address');
+ return false;
+ }});
+});
 var db = window.openDatabase("registration", "1.0", "city stats", 1000000);
 window.onload = function() {
   if (!window.openDatabase) {
@@ -47,7 +123,7 @@ window.onload = function() {
     return;
   }
   db.transaction(function(tx) {
-  tx.executeSql("drop table if exists registration");
+  //tx.executeSql("drop table if exists registration");
     tx.executeSql("create table if not exists registration ("
       + "userid integer primary key,"
       + "username text,"
@@ -132,10 +208,7 @@ window.onload = function() {
             </div> 
             <section>				
                 <div id="container_demo" >
-                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
-                    <a class="hiddenanchor" id="toregister"></a>
-                    <a class="hiddenanchor" id="tologin"></a>
-                    <div id="wrapper">
+                   <div id="wrapper">
                         <div id="login" class="animate form">
                             <form   autocomplete="on"> 
                                 <h1>Log in</h1> 
@@ -145,13 +218,13 @@ window.onload = function() {
                 <div class="line"><label for="password">Password *: </label><input type="password" id="password" /></div>
       
                 <div class="line"><label for="surname">Confirm password*: </label><input type="password" id="cpassword" /></div>
-                <div class="line"><label for="dob">Date of Birth <span color="red">*</span>: </label><input type="text" id="dob" /></div>
-                <div class="line"><label for="email">Email *: </label><input type="email" id="email" /></div>
-                <div class="line"><label for="tel">Telephone: </label><input type="text" id="tel" /></div>
+                <div class="line"><label for="dob">Date of Birth <span color="red">*</span>: </label><input type="Date" id="dob" /></div>
+                <div class="line"><label for="email">Email *: </label><input type="email" id="email" onkeydown="validateEmail()"/></div>
+                <div class="line"><label for="tel">Telephone: </label><input type="tel"  id="tel" /></div>
                 <div class="line"><label for="add">Address *: </label><input type="text" id="add" /></div>
                 <div class="line"><label for="ptc">Post Code *: </label><input type="text" id="ptc" /></div>
                 <p class="login button"> 
-                                    <input type="button" value="Login" id="Login" onclick="validate()"/> 
+                                    <input type="submit" value="Login" id="Login" onclick="validate()"/> 
 								</p>
                                
 								</p>

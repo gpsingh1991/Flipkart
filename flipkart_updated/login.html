@@ -10,16 +10,80 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
         <script type="text/javascript">
+        var db = window.openDatabase("Login", "1.0", "Login", 1000000);
+        window.onload=function(){
+             if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+
+        }
+        db.transaction(function(tx){
+            tx.executeSql("create table if not exists Login("+"customerid integer primary key,"
+                +"username text,"
+                + "password text"+")",null,null,logger);
+            showRecords();
+            console.log("entered into database");
+
+        });
+        function logger(tx,error){
+            console.log("Error",error.message);
+        }
+        function logArguments() {
+    console.log(arguments);
+  }
+  function $_(selector) {
+    return document.querySelector(selector);
+  }
+
+  $_("#Login").onclick = function() {
+    db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql(
+          "insert into Login(username, password ) "
+        + "values (?,?)", [$_("#username").value, $_("#password").value],
+        null, logger
+      );
+      console.log("done");
+      showRecords();
+      validate();
+    });
+  };
+  function showRecords() {
+    console.log("db", db);
+    html = "";
+    db.transaction(function(tx) {
+      tx.executeSql("select * from Login", [], function(tx, results) {
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          html+="<button id='"+record.id+"' class='remove'>x</button> "
+            +record.name+" - "+record.population + "<br/>";
+        }
+        $_("#records").innerHTML = html;
+      });
+    });
+  }
+
+};
+
+        
             function validate()
             {
                 var usernameTextBox = document.getElementById("username");
                 var passwordTextBox = document.getElementById("password");
+                if(usernameTextBox.value=="" || usernameTextBox.value==null)
+                {
+                    alert("enter a valid name");
+                }
+                if(passwordTextBox.value=="" || passwordTextBox.value==null)
+                {
+                    alert("enter a valid password");
+                }
                 if (window.localStorage.getItem(usernameTextBox.value)!==null) 
                 {
                     if (window.localStorage.getItem(usernameTextBox.value)===passwordTextBox.value) 
                     {
                         window.sessionStorage.setItem("username",usernameTextBox.value);
-                        location.href="designpage.html";
+                        location.href="copy of design page.html";
                     }
                     else
                     {
@@ -28,13 +92,13 @@
                 }
                 else
                 {
-                    alert("User does not exist");
+                    alert("Please register first!");
                 }
             }
 
             function register()
             {
-                location.href="my reg.html";
+                location.href="registrationpage.html";
             }
         </script>
     </head>
@@ -47,12 +111,9 @@
             </div> 
             <section>				
                 <div id="container_demo" >
-                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
-                    <a class="hiddenanchor" id="toregister"></a>
-                    <a class="hiddenanchor" id="tologin"></a>
-                    <div id="wrapper">
-                        <div id="login" class="animate form">
-                            <form  action="mysuperscript.php" autocomplete="on"> 
+                   <div id="wrapper">
+                        <div id="login">
+                            <form  autocomplete="on"> 
                                 <h1>Log in</h1> 
                                 <p> 
                                     <label for="username" class="uname" data-icon="u" > Your email or username </label>
@@ -67,11 +128,11 @@
 									<label for="loginkeeping">Keep me logged in</label>
 								</p>
                                 <p class="login button"> 
-                                    <input type="submit" value="Login" /> 
+                                    <input type="button" id="Login" value="Login" onclick="validate()" /> 
 								</p>
                                 <p class="change_link">
 									Not a member yet ?
-									<a href="my reg" class="to_register">Join us</a>
+									<a href="registrationpage.html">Join us</a>
 								</p>
                             </form>
                         </div>
