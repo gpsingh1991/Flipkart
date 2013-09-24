@@ -86,16 +86,45 @@ else if( isNaN(post.value) || post.value===""|| post.value<=0)
   post.focus();
   return;
 }
-       var usernameTextBox = document.getElementById("username");
+
+
+        var usernameTextBox = document.getElementById("username");
         var passwordTextBox = document.getElementById("password");
-        if (window.localStorage.getItem(usernameTextBox.value)!==null) 
+
+         db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql("select * from registration where username=?" ,[usernameTextBox.value], function(tx, results) {
+        if(results.rows.length===0)
         {
-          alert("User already exists");
-          return;
+db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql(
+          "insert into registration (username, lastname , password , confirmpassword, dob, email, telephone, address, postalcode ) "
+        + "values (?,?,?,?,?,?,?,?,?)", [$_("#username").value, $_("#names").value, $_("#password").value, $_("#cpassword").value, $_("#dob").value, $_("#email").value, $_("#tel").value, $_("#add").value, $_("#ptc").value],
+        null, logger
+      );
+    });
+  }
+  else
+        {
+           alert("user already exist");
         }
-        window.localStorage.setItem(usernameTextBox.value,passwordTextBox.value);
-        location.href="login.html";
-      }
+
+});
+    });
+            
+
+       
+        
+        
+      //   if (window.localStorage.getItem(usernameTextBox.value)!==null) 
+      //   {
+      //     alert("User already exists");
+      //     return;
+      //   }
+      //   window.localStorage.setItem(usernameTextBox.value,passwordTextBox.value);
+      //   location.href="login.html";
+      // }
 
 
       //jquery
@@ -114,16 +143,21 @@ else if( isNaN(post.value) || post.value===""|| post.value<=0)
  else {
  alert('Invalid Email Address');
  return false;
- }});
+ }
 });
-var db = window.openDatabase("registration", "1.0", "city stats", 1000000);
+});
+
+
+}//validate();      
+    
+var db = window.openDatabase("registration", "1.0", "registration", 1000000);
 window.onload = function() {
   if (!window.openDatabase) {
     status("Database not supported");
     return;
   }
   db.transaction(function(tx) {
-  //tx.executeSql("drop table if exists registration");
+ // tx.executeSql("drop table if exists registration");
     tx.executeSql("create table if not exists registration ("
       + "userid integer primary key,"
       + "username text,"
@@ -154,6 +188,7 @@ window.onload = function() {
   }
 
   $_("#Login").onclick = function() {
+
     db.transaction(function(tx) {
       console.log("running2");
       tx.executeSql(

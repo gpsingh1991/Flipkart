@@ -10,60 +10,89 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
         <script type="text/javascript">
-        var db = window.openDatabase("Login", "1.0", "Login", 1000000);
+        var db=null;
         window.onload=function(){
-             if (!window.openDatabase) {
-    status("Database not supported");
-    return;
-
+         db = window.openDatabase("registration", "1.0", "registration", 1000000);   
+         //alert("done");
         }
-        db.transaction(function(tx){
-            tx.executeSql("create table if not exists Login("+"customerid integer primary key,"
-                +"username text,"
-                + "password text"+")",null,null,logger);
-            showRecords();
-            console.log("entered into database");
-
-        });
-        function logger(tx,error){
-            console.log("Error",error.message);
-        }
-        function logArguments() {
-    console.log(arguments);
-  }
-  function $_(selector) {
+        function $_(selector) {
     return document.querySelector(selector);
   }
+//   $_("#Login").onclick=function() {
+//     db.transaction(function(tx) {
+//       console.log("running2");
+//       tx.executeSql("select * from registration" ,[], function(tx, results) {
+//         for (var i=0; i<results.rows.length; i++) {
+//           var record = results.rows.item(i);
+//           var name=record.username;
+//           var password=record.password;
+        
+//         }
+//       console.log("done");
+//       // showRecords();
+//       validate();
+//     });
+//   });
+// };
 
-  $_("#Login").onclick = function() {
-    db.transaction(function(tx) {
-      console.log("running2");
-      tx.executeSql(
-          "insert into Login(username, password ) "
-        + "values (?,?)", [$_("#username").value, $_("#password").value],
-        null, logger
-      );
-      console.log("done");
-      showRecords();
-      validate();
-    });
-  };
-  function showRecords() {
-    console.log("db", db);
-    html = "";
-    db.transaction(function(tx) {
-      tx.executeSql("select * from Login", [], function(tx, results) {
-        for (var i=0; i<results.rows.length; i++) {
-          var record = results.rows.item(i);
-          html+="<button id='"+record.id+"' class='remove'>x</button> "
-            +record.name+" - "+record.population + "<br/>";
-        }
-        $_("#records").innerHTML = html;
-      });
-    });
-  }
 
-};
+
+
+       // var db = window.openDatabase("registration", "1.0", "city stats", 1000000);
+//         var db = window.openDatabase("Login", "1.0", "Login", 1000000);
+//         window.onload=function(){
+//              if (!window.openDatabase) {
+//     status("Database not supported");
+//     return;
+
+//         }
+//         db.transaction(function(tx){
+//             tx.executeSql("create table if not exists Login("+"customerid integer primary key,"
+//                 +"username text,"
+//                 + "password text"+")",null,null,logger);
+//             showRecords();
+//             console.log("entered into database");
+
+//         });
+//         function logger(tx,error){
+//             console.log("Error",error.message);
+//         }
+//         function logArguments() {
+//     console.log(arguments);
+//   }
+//   function $_(selector) {
+//     return document.querySelector(selector);
+//   }
+
+//   $_("#Login").onclick = function() {
+//     db.transaction(function(tx) {
+//       console.log("running2");
+//       tx.executeSql(
+//           "insert into Login(username, password ) "
+//         + "values (?,?)", [$_("#username").value, $_("#password").value],
+//         null, logger
+//       );
+//       console.log("done");
+//       showRecords();
+//       validate();
+//     });
+//   };
+//   function showRecords() {
+//     console.log("db", db);
+//     html = "";
+//     db.transaction(function(tx) {
+//       tx.executeSql("select * from Login", [], function(tx, results) {
+//         for (var i=0; i<results.rows.length; i++) {
+//           var record = results.rows.item(i);
+//           html+="<button id='"+record.id+"' class='remove'>x</button> "
+//             +record.name+" - "+record.population + "<br/>";
+//         }
+//         $_("#records").innerHTML = html;
+//       });
+//     });
+//   }
+
+// };
 
         
             function validate()
@@ -78,29 +107,89 @@
                 {
                     alert("enter a valid password");
                 }
-                if (window.localStorage.getItem(usernameTextBox.value)!==null) 
-                {
-                    if (window.localStorage.getItem(usernameTextBox.value)===passwordTextBox.value) 
-                    {
-                        window.sessionStorage.setItem("username",usernameTextBox.value);
-                        location.href="copy of design page.html";
-                    }
-                    else
-                    {
-                        alert("Incorrect password");
-                    }
-                }
-                else
-                {
-                    alert("Please register first!");
-                }
+                  db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql("select * from registration where username=?" ,[usernameTextBox.value], function(tx, results) {
+        if(results.rows.length===0)
+        {
+            alert("user doesn't exist please register first");
+        }
+        else
+        {
+            for (var i=0; i<results.rows.length; i++) {
+                var record = results.rows.item(i);
+                var name=record.username;
+                var password=record.password;
+          if(passwordTextBox.value===password){
+             alert("user login success");
             }
+        else
+        {
+            alert("wrong password");
+        }
+        }
+        
+}
 
-            function register()
-            {
-                location.href="registrationpage.html";
+        
+    
+        
+      console.log("done");
+      
+      //validate();
+    });
+      // if(usernameTextBox.value==name &&passwordTextBox.value==password){
+      //        location.href="copy of design page.html";
+      //   }
+      //   else
+      //   {
+      //       alert("user doesn't exist please register first");
+      //   }
+  });
             }
-        </script>
+      //           db.transaction(function(tx){
+
+      //               tx.executeSql("select * from registration" ,[], function(tx, results) {
+      //   for (var i=0; i<results.rows.length; i++) {
+      //     var record = results.rows.item(i);
+      //     var name=record.username;
+      //     var password=record.password;
+        
+      //   }
+      //   alert(name);
+    
+      // });
+      //           }
+
+
+
+                //     if(name==usernameTextBox.value){
+                //         alert("name exist");
+                //     }
+                // });
+                // if (window.localStorage.getItem(usernameTextBox.value)!==null) 
+                // {
+                //     if (window.localStorage.getItem(usernameTextBox.value)===passwordTextBox.value) 
+                //     {
+                //         window.sessionStorage.setItem("username",usernameTextBox.value);
+                //         location.href="copy of design page.html";
+                //     }
+                //     else
+                //     {
+                //         alert("Incorrect password");
+                //     }
+                // }
+                // else
+                // {
+                //     alert("Please register first!");
+                // }
+            
+
+            // function register()
+            // {
+            //     location.href="registrationpage.html";
+            // }
+         </script>
     </head>
     <body>
         <div class="container">

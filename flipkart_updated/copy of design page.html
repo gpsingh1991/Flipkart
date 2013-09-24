@@ -133,7 +133,8 @@ border: none;
 // $_("#first").onclick=function(){
 //   alert("yes");
 //};
-var db = window.openDatabase("Login", "1.0", "Login", 1000000000);
+var db = window.openDatabase("registration", "1.0", "registration", 1000000);
+
     
 
 window.onload = function()
@@ -142,22 +143,50 @@ window.onload = function()
 
    if (!window.openDatabase) {
     status("Database not supported");
-    return;
+    return;}
 
-        }
          db.transaction(function(tx){
-          tx.executeSql("create table if not exists books("+"book_id integer primary key,"
-            +" book_name text,"
-            +" book_cost integer"+")",null,null,logger);
+          tx.executeSql("drop table if exists cities");
+            tx.executeSql("drop table if exists items");
+          // tx.executeSql("create table if not exists books("+"book_id integer primary key,"
+          //   +" book_name text,"
+          //   +" book_cost integer"+")",null,null,logger);
+          tx.executeSql("create table if not exists items("+"item_id integer primary key,"
+            + "category_id integer,"
+            + "image url,"
+            + "item_name text,"
+            + "item_cost integer"+")",null,null,logger);
           console.log("done");
-        });
-  
+          tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(1,1,"http://img7a.flixcart.com/image/watch/w/e/r/ad125-casio-400x400-imadm8yyhpqnzsnk.jpeg","books",123)');
+  console.log("entered into itemstable");
+        //  insert();
+        tx.executeSql("select * from items where category_id=1", [], function(tx, results) {
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          alert(bookname);
+          // html+="<button id='"+record.id+"' class='remove'>x</button> "
+          //   +record.name+" - "+record.population + "<br/>";
+        }
+        // $_("#records").innerHTML = html;
+      });
+        //tx.executeSql(' select item_name from items where category_id=1;')
+
   function logger(tx, error) {
     console.log("Error", error.message);
   }
   function logArguments() {
     console.log(arguments);
   }
+        });
+        //  db.transaction(function(tx){
+        //   tx.executeSql("create table if not exists items("+"item_id integer primary key,"
+        //     + "category_id integer primary key"
+        //     +" item_name text,"
+        //     +" item_cost integer"+")",null,null,logger);
+        //   console.log("done");
+        // });
+  
   function $_(selector) {
     return document.querySelector(selector);
   }
@@ -194,6 +223,32 @@ window.onload = function()
     });
 
   };
+  $_("#button").onclick=function(){
+  db.transaction(function(tx){
+    //tx.executeSql("drop table if exists cart");
+         tx.executeSql("create table if not exists cart("+"cart_id integer primary key,"
+            +" userid integer,"
+            +"price integer,"
+            +" cart_quantity integer"+")",null,null,logger);
+         tx.executeSql("insert into cart(cart_id,userid,price,cart_quantity ) values(1,1,1199,1)");
+          console.log("done");
+          insert();
+        });
+  
+   
+
+    function logger(tx, error) {
+    console.log("Error", error.message);
+  }
+  
+  };
+  function insert(){
+    db.transaction(function(tx){
+    tx.executeSql('insert into items(item_id,category_id,image,item-name,item_cost ) values(1,1,"images/books1.jpg","xyz",123)');
+  console.log("entered into itemstable");
+  });
+
+  }
   
   
         //database();
@@ -221,6 +276,26 @@ function logout()
 
 
 function books(){
+  db.transaction(function(tx){
+      tx.executeSql("select * from items where category_id=1", [], function(tx, results) {
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          var img=record.image;
+          var cost=record.item_cost;
+          alert(bookname);
+          var dl=$("<dl><dd>bookname</dd></dl>");
+    $("div").filter(".mod-blank").append($(dl));
+    //var ul=$("<dl><dd>bookname</dd></dl>");
+    var ul=$("<ul><li><img width='80' height='80' src="+img+"></li><li>"+bookname+" </li> <li>"+cost+"</li></ul>");
+    $("div").filter("#right").append($(ul));
+        }
+      });
+  });
+   // var dl=$("<dl><dd>record.item_name</dd></dl>");
+   //  $("div").filter(".mod-blank").append($(dl));
+  //$("dd").append("bookname").addClass("selected");
+  //$("dd").append("bookname").addClass("selected");
     $("dd").filter(".books").addClass("selected");
     $("dd").filter(".watches").removeClass("selected");
      $("dd").filter(".laptops").removeClass("selected");
@@ -438,8 +513,7 @@ function laptops(){
         <div class="nav-siderBar nav-siderBar_b mod_categories mod-block">
     <div class="mod-title"><span>All categories</span></div>
     <div class="mod-blank">
-        <dl>
-                                
+        <dl>                
                                     <dd class="books" id="fist" onclick="books()">books</dd>
                         <dd class="watches" onclick="watch()"  >Watches</dd>
                         <dd class="mobiles" onclick="mobiles()">Mobiles </dd>
@@ -473,43 +547,43 @@ function laptops(){
   <div class="flash-content">
         <ul>
 
-     <li><a onmouseover="changeimg(0);">ab sirf shopping nahi flipkart karo</a></li>
+     <!-- <li><a onmouseover="changeimg(0);">ab sirf shopping nahi flipkart karo</a></li>
       <li><a onmouseover="changeimg(1);" >Dan Brown books</a></li>
       <li><a onmouseover="changeimg(2);" >HP laptops at best prices only at flipkart.com</a></li>
-      <li><a onmouseover="changeimg(3);" >Shop watches at flipkart.com</a></li>
+      <li><a onmouseover="changeimg(3);" >Shop watches at flipkart.com</a></li> -->
       <div class="clear"></div>
         </ul>
    </div>
 </div>
 <script>
-  flashnow = 0;
-  flashprev = 0;
-  flashnext = 1;
-  flashelems = document.getElementById('flashs').getElementsByTagName('li');
-  flashtotal = flashelems.length;
-  function changeimg(i){
-    for(var ii = 0; ii < flashtotal ; ii++ ){
-      flashelems[ii].style.display = 'none';
-    }
-    flashelems[i].style.display = 'block';
-    var w = parseInt(document.getElementById('notch-l-r').clientWidth);
-    document.getElementById('notch-img').style.left = ((w/flashelems.length)*i-800)+'px';
-    flashnow = i;
-    flashprev = i - 1;
-    flashnext = i + 1;
-    flashprev = flashprev <=0 ? 0:flashprev;
-    flashnext = flashnext >= flashtotal ? flashtotal -1 : flashnext;
-    if(flashnow == 0){
-      document.getElementById('flash_prev').style.display = 'none';
-    } else {
-      document.getElementById('flash_prev').style.display = 'block';
-    }
-    if(flashnow == flashtotal - 1){
-      document.getElementById('flash_next').style.display = 'none';
-    } else {
-      document.getElementById('flash_next').style.display = 'block';
-    }
-  }
+  // flashnow = 0;
+  // flashprev = 0;
+  // flashnext = 1;
+  // flashelems = document.getElementById('flashs').getElementsByTagName('li');
+  // flashtotal = flashelems.length;
+  // function changeimg(i){
+  //   for(var ii = 0; ii < flashtotal ; ii++ ){
+  //     flashelems[ii].style.display = 'none';
+  //   }
+  //   flashelems[i].style.display = 'block';
+  //   var w = parseInt(document.getElementById('notch-l-r').clientWidth);
+  //   document.getElementById('notch-img').style.left = ((w/flashelems.length)*i-800)+'px';
+  //   flashnow = i;
+  //   flashprev = i - 1;
+  //   flashnext = i + 1;
+  //   flashprev = flashprev <=0 ? 0:flashprev;
+  //   flashnext = flashnext >= flashtotal ? flashtotal -1 : flashnext;
+  //   if(flashnow == 0){
+  //     document.getElementById('flash_prev').style.display = 'none';
+  //   } else {
+  //     document.getElementById('flash_prev').style.display = 'block';
+  //   }
+  //   if(flashnow == flashtotal - 1){
+  //     document.getElementById('flash_next').style.display = 'none';
+  //   } else {
+  //     document.getElementById('flash_next').style.display = 'block';
+  //   }
+  //}
 </script>            
               
             </div>
@@ -526,6 +600,17 @@ function laptops(){
     <div class="item-new-list mod-block bb3">
    <div class="mod-title">New Items Available</div>
     <div class="mod-blank" id="right">
+
+<!-- 
+
+      var dl=$("<dl><dd>bookname</dd></dl>");
+    $("div").filter(".mod-blank").append($(dl)); -->
+
+<!--     var ul=$("<dl><dd>bookname</dd></dl>");
+    var ul=$("<ul><li></li><li> </li> <li> </li></ul>");
+    $("div").filter("#right").append($(ul)); -->
+
+
                             <ul id="watch1">
                 <li class="item-img"><a href="" title="Titan steel" ><img src="http://img7a.flixcart.com/www/promos/new/20130822-171144-vis-nav.jpg" alt="Titan steel" title="Titan steel" /></a></li>
                 <li class="item-name"><a href="" title="Titan steel" >Titan steel</a></li>
@@ -536,9 +621,10 @@ function laptops(){
             </ul>
            
                     <ul id="watch2">
-                <li class="item-img"><a href="" title="" ><img src="images/watch1.jpeg" alt="Sonata yuva Analog watch" title="Sonata yuva Analog watch" /></a></li>
+                <li class="item-img"><a href="" title="" ><img src="images/watch1.jpeg" alt="Sonata yuva Analog watch" title="Sonata yuva Analog watch" />  <input type="button" id="button" value="add to cart"></a></li>
                 <li class="item-name"><a href="" title="Sonata yuva Analog watch" >Sonata yuva Analog watch</a></li>
                 <li class="item-price"><span class="price-now">Rs.1,199</span>
+
                                
                 </li>
             </ul>
@@ -569,6 +655,14 @@ function laptops(){
                                
                 </li>
             </ul>
+          <!--   db.transaction(function(tx,results){
+
+
+
+             select item_name from items where category_id=1;
+
+          });
+           $("#book1").append -->
            
                     <ul id="book1">
                 <li class="item-img"><!-- <a href="" title="Literature & Fiction" > --><img src="images/books1.jpg" alt="Literature & Fiction" title="Literature & Fiction" /></a></li>
