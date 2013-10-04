@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Online shopping only at Flipkart.com</title>
+<link href="css/style33.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+#head_top {
+background: #454545;
+height: 20px;
+color: #FFF;
+line-height: 20px;
+}
+#top_c {
+width: 960px;
+margin: 0px auto;
+padding: 0px 10px;
+}
+#welcome {
+display: inline;
+float: left;
+width: 380px;
+margin-left: 20px;
+}
+#body {
+line-height: 18px;
+}
+#html, body {
+width: 100%;
+}
+#body, input, button, select, textarea {
+font: 11px/18px Arial, Helvetica, sans-serif;
+}
+.part_header {
+position: relative;
+height: 120PX;
+width: 100%;
+background-color: #00AAAA;
+}
+.part_header .mod-logo h1, .bb3 h2, .item-top10 h2 {
+font-size: 0;
+line-height: 0;
+text-indent: -1000px;
+}
+.mod-shoppingCart {
+position: absolute;
+top: 82px;
+right: 10px;
+background: url(images/car.gif) no-repeat;
+height: 30px;
+line-height: 30px;
+}
+#fk-check {
+background: url(images/fkKaro.png) no-repeat 0 -121px;
+width: 16px;
+height: 14px;
+display: inline-block;
+vertical-align: middle;
+}
+.rmargin5 {
+margin-right: 5px;
+}
+#span{
+margin: 0;
+padding: 5px;
+border: 5px;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+text-align: center;
+}
+.mod-about .mod-title, .wholesaledvd .mod-title, .mod-help .mod-title, .flow-user .mod-title, .site-title, .part_col-4 .mod-title, .bb3 .mod-title {
+height: 22px;
+width: 750px;
+background: #37a8a3;
+color: #fff;
+font-size: 14px;
+font-weight: bold;
+line-height: 22px;
+text-indent: 20px;
+}
+.nav-main ul li {
+  margin-left: 40px;
+text-align: center;
+font-size: 16PX;
+font-weight: 700;
+color: #FFFFFF;
+}
+.nav-main {
+width: 800px;
+height: 30px;
+position: absolute;
+line-height: 30px;
+top: 80px;
+left: 24px;
+border: #FFF 1px solid;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+}
+.part_col-1 .mod-title, .mod_categories .mod-title, .part_col-3 .part_right .mod-title, .part_col-2 .part_right .mod-title {
+width: 190px;
+font-size: 14px;
+color: #FFF;
+text-align: center;
+line-height: 26px;
+font-weight: bold;
+background: url(images/new.gif) no-repeat;
+height: 22px;
+margin: 0px;
+border: none;
+}
+.flash-content-img{ width:758px; height:230px; overflow:hidden;}
+ .selected { color:blue; }
+
+ .bb3 .mod-blank .item-img, .part_col-2 .mod-blank .item-img, .part_col-4 .item-rHot-list .mod-blank .item-img {
+width: 120px;
+height: 120px;
+border: #e6fffe 3px solid;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+overflow: hidden;
+text-align: center;
+}
+</style>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript">
+   
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+
+    
+
+window.onload = function()
+
+{
+ window.localStorage.removeItem("Cart");
+   if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+
+  }
+
+         db.transaction(function(tx){
+      // tx.executeSql("drop table if exists registration");
+        tx.executeSql("drop table if exists cartdetails");
+        tx.executeSql("drop table if exists user");
+
+        tx.executeSql("drop table if exists categories");
+        tx.executeSql("drop table if exists category");
+        tx.executeSql("drop table if exists items");
+     // });
+
+  db.transaction(function(tx){
+    tx.executeSql("create table if not exists items("+"item_id integer primary key,"
+            + "category_id integer,"
+            + "image url,"
+            + "item_name text,"
+            + "item_cost integer"+")",null,success,logger);
+          function success(tx){
+             tx.executeSql('select * from items',[],function(tx,results){
+              if(results.rows.length==0){
+                tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(1,1,"images/books1.jpg","Literature & Fiction",350)');
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(2,1,"images/books2.jpg","Entrance exam preparation",550)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(3,1,"images/books3.jpg","Academic & professional",500)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(4,2,"http://img7a.flixcart.com/www/promos/new/20130822-171144-vis-nav.jpg","Titan steel",2795)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(5,2,"images/watch1.jpeg","Sonata yuva Analog watch",1199)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(6,2,"images/watch2.jpg","sonata fashion fibre",649)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(7,2,"images/watch5.jpeg","Sonata pair analog watch", 2799)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(8,2,"images/watch7.jpeg","Titan raga analog watch",7495)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(9,3,"images/phone5.jpg","Google nexus 4(black)",48995)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(10,3,"images/phone3.jpg","Nokia Lumia 720",23499)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(11,4,"images/laptop1.jpg","HP Pavilion notebook",30500)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(12,4,"images/laptop2.jpg","Dell vastro laptop",35995)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(13,4,"images/laptop3.jpg","lenovo ultra pro laptops",48995)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(14,5,"images/tv1.jpg","Micromax HD LED TV ",8810)',[],success,logger);
+           tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(15,5,"images/tv2.jpg","Living Arts LA TV HD Ready LCD ",6990)',[],success,logger);
+
+              }
+              else{
+                console.log("category table already exists");
+              }
+            });
+
+          }
+           function logger(tx, error) {
+    console.log("Error", error.message);
+  }
+
+  });
+      
+              function getCurrentFormattedDate()
+        {
+          var currentDateTime = new Date();
+          var currentFormattedDate = currentDateTime.getMonth()+"/"+currentDateTime.getDate()+"/"+currentDateTime.getFullYear();
+          return currentFormattedDate;
+        }
+         function logArguments() {
+    console.log(arguments);
+  }
+          
+  db.transaction(function(tx) {
+ // tx.executeSql("drop table if exists registration");
+    tx.executeSql("create table if not exists registration ("
+      + "userid integer primary key autoincrement,"
+      + "username text,"
+      + "lastname text,"
+      + "password text,"
+      + "confirmpassword text,"
+      + "dob Date,"
+      + "email text,"
+      + "telephone integer,"
+      + "address text,"
+      + "postalcode integer"
+      + ")",null,null, logger);  
+   // showRecords();
+     console.log("done");
+      function logger(tx, error) {
+    console.log("Error has occured", error.message);
+  }
+
+  });
+        db.transaction(function(tx){
+          tx.executeSql("create table if not exists category("+"category_id integer primary key,"
+            + "category_name text,"
+            + "created_date datetime DEFAULT '"+getCurrentFormattedDate()+"'"
+            // + "updated_date datetime"
+            +")",[],success,logger);
+           function success(tx){
+            console.log("done creating category table");
+            tx.executeSql('select * from category',[],function(tx,results){
+              if(results.rows.length==0){
+                tx.executeSql('insert into category( category_id, category_name) values ( 1, "books")',[],success,logger);
+  tx.executeSql('insert into category( category_id, category_name) values ( 2, "watches")',[],success,logger);
+  tx.executeSql('insert into category( category_id, category_name) values ( 3, "mobiles")',[],success,logger);
+  tx.executeSql('insert into category( category_id, category_name) values ( 4, "laptops")',[],success,logger);
+  tx.executeSql('insert into category( category_id, category_name) values ( 5, "television")',[],success,logger);
+  function logger(tx, error) {
+    console.log("Error has occured", error.message);
+  }
+  function success(tx){
+
+          console.log("done creating category");
+         }
+
+
+              }
+              else{
+                console.log("records have already been inserted");
+              }
+            });
+
+           }
+           function logger(tx,error){
+            console.log("error",error.message);
+           }
+
+
+        });  
+           
+           db.transaction(function(tx){
+             tx.executeSql("create table if not exists cartdetails("+"cart_id integer,"
+             + "cartdetails_id integer primary key autoincrement,"
+             + "item_id integer,"
+             + "quantity integer,"
+             + "price integer,"
+             + "created_date datetime DEFAULT '"+getCurrentFormattedDate()+"',"
+             + "updated_date datetime DEFAULT '"+getCurrentFormattedDate()+"'"
+             //+ "primary key(cart_id,cartdetails_id)"
+             +")",[],successes,loggers);
+
+
+function loggers(tx, error) {
+    console.log("Error has occured", error.message);
+  }
+  function successes(tx){
+
+          console.log("done creating cartdetails table");
+         // inserting();
+        
+
+        }
+
+
+          console.log("done");
+       
+
+           });
+
+           
+
+
+
+  if (window.sessionStorage.getItem("username")!==null && window.sessionStorage.getItem("username")!=="") 
+        {
+          var valu=window.sessionStorage.getItem("username");
+          // var divs = document.getElementsByTagName("input");
+          // alert(divs);
+          var txt=document.getElementById("nameSpanEle");
+          txt.innerHTML="welcome " + window.sessionStorage.getItem("username");
+          document.getElementsByTagName("div").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+         // document.getElementById("nameSpan").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+        }
+        else
+        {
+          document.getElementById("nameSpanEle").innerHTML="Please login";
+        }
+     });
+};
+
+function logout()
+      {
+        window.sessionStorage.removeItem("username");
+        window.localStorage.removeItem("username");
+        window.localStorage.removeItem("Cart");
+        location.href="copy of design page.html";
+
+      }
+
+      function addtocart(itemid){
+         var id=itemid;
+       if (window.sessionStorage.getItem("username")!==null && window.sessionStorage.getItem("username")!=="") 
+        {
+        
+          var valu=window.sessionStorage.getItem("username");
+          var txt=document.getElementById("nameSpanEle");
+          txt.innerHTML="welcome " + window.sessionStorage.getItem("username");
+          document.getElementsByTagName("div").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+          //window.localStorage.setItem("Cart",1);
+         
+         display(id);
+        }
+        else
+        {
+          alert("please login first to add things to cart!");
+          document.getElementById("nameSpanEle").innerHTML="Please login";
+         window.sessionStorage.removeItem("username");
+          location.href="copy of design page.html";
+
+        }
+         function display(itemid){
+        var id=itemid;
+        //alert("display");
+        var cart=window.sessionStorage.getItem("cart");
+        //alert(cart);
+        db.transaction(function(tx){
+          // tx.executeSql('select * from items where item_id=?',[itemid],function(tx,results){
+          // for(var i=0;i<results.rows.length;i++){
+          //    var record=results.rows.item(i);
+          //   var item_Id=record.item_id;
+          //   var price=record.item_cost;
+         
+          tx.executeSql("select * from items where item_id=?",[itemid],function(tx,results){
+      for(var i=0;i<results.rows.length;i++){
+        var record=results.rows.item(i);
+        var itemid=record.item_id;
+        var price=record.item_cost;
+ tx.executeSql('insert into cartdetails(cart_id,item_id,quantity,price) values(?,?,1,?)',[cart,id,price],success,loggerS);
+ }
+ function success(tx){
+  console.log("done inserting into cart table");
+  db.transaction(function(tx){
+         tx.executeSql('select SUM(quantity) AS TOTAL from cartdetails',[],function(tx,results){
+          var ne=0; $("a").filter("#topcart_total").html("");
+          for(var i=0;i<results.rows.length;i++){
+            var record=results.rows.item(i);
+            var ne=record.TOTAL;
+            //alert(ne);
+          }
+$("a").filter("#topcart_total").append("Cart("+ne+")");////cart is getting displayed
+
+         },log);
+          
+     
+     function suc(tx){
+      console.log("finish");
+
+     }
+     function log(tx,error){
+      console.log("Error", error.message);
+
+     }
+   });
+ }
+function loggerS(tx,error){
+  console.log("could not insert",error.message)
+}
+          });
+        
+      
+        });
+    
+      }
+        
+      
+      
+
+   
+   if (window.sessionStorage.getItem("username")!==null && window.sessionStorage.getItem("username")!=="") 
+        {
+        
+          var valu=window.sessionStorage.getItem("username");
+          var txt=document.getElementById("nameSpanEle");
+          txt.innerHTML="welcome " + window.sessionStorage.getItem("username");
+          document.getElementsByTagName("div").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+
+
+        }
+        else
+        {
+          alert("please login first to add things to cart!");
+          document.getElementById("nameSpanEle").innerHTML="Please login";
+     
+       window.sessionStorage.removeItem("username");
+       location.href="copy of design page.html";
+
+        }
+ 
+  
+}
+
+function books(cat_id){
+  db.transaction(function(tx){
+      tx.executeSql("select * from items where category_id=?", [cat_id], function(tx, results) {
+        $("div").filter("#right").html("");
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          var img=record.image;
+          var cost=record.item_cost;
+         var itemId=record.item_id;
+        
+
+    var vl=$("<ul><li align=\"center\"><img width='60px' height='60px' src="+img+" class=\"item-img\" align=\"center\"><input type=\"button\" class=\"add_to_cart_button\" id=\"addToCartButton"+itemId+"\" onclick=\"addtocart("+itemId+")\" value=\"add to cart\" align=\"center\"></li> <li class=\"item_name\">"+bookname+"</li></li><li class=\"item-price\" align=\"left\"><span class=\"price-now\">"+cost+"</span></li></ul>")
+   
+ $("div").filter("#right").append($(vl));
+ function $_(selector) {
+    return document.querySelector(selector);
+  }
+ 
+
+
+if(cat_id==1){
+   $("dd").filter(".books").addClass("selected");
+    $("dd").filter(".watches").removeClass("selected");
+     $("dd").filter(".laptops").removeClass("selected");
+      $("dd").filter(".televisions").removeClass("selected");
+       $("dd").filter(".mobiles").removeClass("selected");
+
+}
+else if(cat_id==2)
+{
+  $("dd").filter(".watches").addClass("selected");
+      $("dd").filter(".books").removeClass("selected");
+    $("dd").filter(".laptops").removeClass("selected");
+    $("dd").filter(".televisions").removeClass("selected");
+       $("dd").filter(".mobiles").removeClass("selected");
+}
+else if(cat_id==3){
+  $("dd").filter(".watches").removeClass("selected");
+      $("dd").filter(".books").removeClass("selected");
+    $("dd").filter(".laptops").removeClass("selected");
+    $("dd").filter(".televisions").removeClass("selected");
+    $("dd").filter(".mobiles").addClass("selected");
+
+}
+else if(cat_id==4){
+    $("dd").filter(".watches").removeClass("selected");
+      $("dd").filter(".books").removeClass("selected");
+     $("dd").filter(".mobiles").removeClass("selected");
+  $("dd").filter(".televisions").removeClass("selected");
+   $("dd").filter(".laptops").addClass("selected");
+
+}
+else if(cat_id==5){
+      $("dd").filter(".watches").removeClass("selected");
+      $("dd").filter(".books").removeClass("selected");
+    $("dd").filter(".laptops").removeClass("selected");
+   $("dd").filter(".mobiles").removeClass("selected");
+  $("dd").filter(".televisions").addClass("selected");
+
+}
+
+
+ 
+
+        }
+
+      });
+  });
+
+  
+  
+     $("dd").filter(".books").addClass("selected");
+    $("dd").filter(".watches").removeClass("selected");
+     $("dd").filter(".laptops").removeClass("selected");
+      $("dd").filter(".televisions").removeClass("selected");
+       $("dd").filter(".mobiles").removeClass("selected");
+
+ 
+  
+}
+
+
+
+   
+ </script>
+
+  
+    </head>
+<body>
+
+
+    <div class="head_top">
+        <div class="top_c">
+
+        <div class="welcome" id="nameSpanEle"></div>
+
+         <div class="top-member-info"> 
+    <ul>
+      <li>
+      </li>
+        <li class="usecenter">
+         
+            <a href="login.html" title="Sign In"  rel="nofollow">Register / Login</a>  |  
+    <a href="" title="Member Center" rel="nofollow">My Account</a>
+      &nbsp;&nbsp;| &nbsp;&nbsp;</li>
+      <li>
+    <a href="copy of design page.html" onclick="logout()">Logout</a> &nbsp;&nbsp;| &nbsp;&nbsp;
+
+      </li>
+        <li><a href="" rel="nofollow">Contact Us</a> &nbsp; &nbsp;</li>
+    </ul>
+</div> 
+      
+        </div> 
+    </div>
+
+
+
+    <div class="part_main">
+    
+        <div class="part_header"> 
+        
+        <div class="mod-logo">
+  <a href="/"><img src="images/flipkart.png" alt="Flipkart.com: Online Shopping India" title="Online Shopping India | Flipkart.com" class="fk-logo-img"/></a>
+</div>        
+
+<div class="mod-search">
+    <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" class="form-search">
+    <label for="keyword"> </label>
+   
+    <!-- <span class="input-txt"><input name="keywords" type="text" id="keyword" value="" /></span>
+    <input type="submit" value="search" class="btn-search" />
+    </form>
+    <span> -->
+       
+    </span>
+</div>
+<div class="hot_search">
+            <span style="color:#454545; font-weight:bold" id="nameSpanEle">Online shopping India-Shop online for books,mobile phones,watches & more at flipkart.com</span>
+</div>  
+        <div class="live-help">
+    <ul>
+      <!-- <li>
+            <a href="article-4-Contact+Us.html" title="please contact us via email" rel="nofollow" class="live_a"></a>
+        </li> -->
+    </ul>
+</div> 
+
+
+<div class="nav-main">  
+    <ul class="list-nav-main"> 
+    
+                <li  class="list_nav_1" >
+               <img src="images/fkKaro.png"/> <span id="nameSpan"></span> <span class="fk-check  rmargin5"></span> <span>100% original products</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                <li  class="list_nav_2" >
+               <img src="images/fkKaro.png"/><span class="fk-check  rmargin5"></span> <span>Cash On Delivery</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                <li  class="list_nav_3" >
+                <img src="images/fkKaro.png"/><span class="fk-check  rmargin5"></span> <span>Free & Easy Returns</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                
+        </ul>
+</div>
+
+
+
+
+   
+<div class="mod-shoppingCart" >
+<div class="carttitle" id="topcart">
+<a id="topcart_total" class="top_cart_total" href="cart.html" title="Cart" rel="nofollow" ><span></span></a><ul class="empty_cart">Your cart is empty.</ul></div>
+ 
+</div> 
+         
+        </div> 
+        <div class="part_container">
+        
+            <div class="part_col-1"> 
+             
+        <div class="nav-siderBar nav-siderBar_b mod_categories mod-block">
+    <div class="mod-title"><span>All categories</span></div>
+    <div class="mod-blank">
+        <dl>                
+                <dd class="books" id="fist" onclick="books(1)">books</dd>
+                        <dd class="watches" onclick="books(2)" >Watches</dd>
+                        <dd class="mobiles" onclick="books(3)">Mobiles </dd>
+                        <dd class="laptops" onclick="books(4)">Laptops </dd>
+                    <dd class="televisions" onclick="books(5)">Television</dd>
+                   
+                                </dl>
+    </div>
+</div>
+            
+            </div>
+
+
+
+            <div class="part_col-2"> 
+             
+            <div class="index-flash">
+   <div class="flash-content-img" id="flashs">
+    <ul>
+      <li style="display:block;"><img src="images/flip 730 X300.jpg" /> </li>
+      <li style="display:none;"><img src="images/first1.jpg" /></li>
+      <li style="display:none;"><img src="images/second2.jpg"  /></li>
+      <li style="display:none;"><img src="images/third3.jpg"  /></li>
+     
+    </ul>
+  </div>
+    <div class="notch" id="notch-l-r">
+      <img src="images/notch.png" id="notch-img" style="left:-800px;"/>
+    </div>
+  <div class="flash-content">
+        <ul>
+
+     <!-- <li><a onmouseover="changeimg(0);">ab sirf shopping nahi flipkart karo</a></li>
+      <li><a onmouseover="changeimg(1);" >Dan Brown books</a></li>
+      <li><a onmouseover="changeimg(2);" >HP laptops at best prices only at flipkart.com</a></li>
+      <li><a onmouseover="changeimg(3);" >Shop watches at flipkart.com</a></li> -->
+      <div class="clear"></div>
+        </ul>
+   </div>
+</div>
+<script>
+  // flashnow = 0;
+  // flashprev = 0;
+  // flashnext = 1;
+  // flashelems = document.getElementById('flashs').getElementsByTagName('li');
+  // flashtotal = flashelems.length;
+  // function changeimg(i){
+  //   for(var ii = 0; ii < flashtotal ; ii++ ){
+  //     flashelems[ii].style.display = 'none';
+  //   }
+  //   flashelems[i].style.display = 'block';
+  //   var w = parseInt(document.getElementById('notch-l-r').clientWidth);
+  //   document.getElementById('notch-img').style.left = ((w/flashelems.length)*i-800)+'px';
+  //   flashnow = i;
+  //   flashprev = i - 1;
+  //   flashnext = i + 1;
+  //   flashprev = flashprev <=0 ? 0:flashprev;
+  //   flashnext = flashnext >= flashtotal ? flashtotal -1 : flashnext;
+  //   if(flashnow == 0){
+  //     document.getElementById('flash_prev').style.display = 'none';
+  //   } else {
+  //     document.getElementById('flash_prev').style.display = 'block';
+  //   }
+  //   if(flashnow == flashtotal - 1){
+  //     document.getElementById('flash_next').style.display = 'none';
+  //   } else {
+  //     document.getElementById('flash_next').style.display = 'block';
+  //   }
+  //}
+</script>            
+              
+            </div>
+        
+        <div class="clear"></div>
+
+
+ <div class="part_col-3" >
+        
+
+
+
+ <div class="part_left">
+    <div class="item-new-list mod-block bb3">
+   <div class="mod-title">New Items Available</div>
+    <div class="mod-blank" id="right">
+
+<!-- 
+
+      var dl=$("<dl><dd>bookname</dd></dl>");
+    $("div").filter(".mod-blank").append($(dl)); -->
+
+<!--     var ul=$("<dl><dd>bookname</dd></dl>");
+    var ul=$("<ul><li></li><li> </li> <li> </li></ul>");
+    $("div").filter("#right").append($(ul)); -->
+
+
+                            <ul id="watch1">
+                <li class="item-img"><a href="" title="Titan steel" ><img src="http://img7a.flixcart.com/www/promos/new/20130822-171144-vis-nav.jpg" alt="Titan steel" title="Titan steel" /></a></li>
+                <li class="item-name"><a href="" title="Titan steel" >Titan steel</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs 2,795</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch2">
+                <li class="item-img"><a href="" title="" ><img src="images/watch1.jpeg" alt="Sonata yuva Analog watch" title="Sonata yuva Analog watch" />  <input type="button" id="button" value="add to cart"></a></li>
+                <li class="item-name"><a href="" title="Sonata yuva Analog watch" >Sonata yuva Analog watch</a></li>
+                <li class="item-price"><span class="price-now">Rs.1,199</span>
+
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch3">
+                <li class="item-img"><a href="" title="Sonata fashion fibre" ><img src="images/watch2.jpg" alt="Sonata fashion fibre" title="Sonata fashion fibre" /></a></li>
+                <li class="item-name"><a href="" title="Sonata fashion fibre" >Sonata fashion fibre</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.649</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch4">
+                <li class="item-img"><a href="" title="Sonata pair analog watch" ><img src="images/watch5.jpeg"  title="Sonata pair analog watch" /></a></li>
+                <li class="item-name"><a href="" title="Sonata pair analog watch" >Sonata pair analog watch</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 2,799</span>
+                               
+                </li> 
+            </ul>
+           
+                    <ul id="watch5">
+                <li class="item-img"><a href="" title="Titan raga analog watch for women" ><img src="images/watch7.jpeg" alt="Titan raga analog watch for women" title="Titan raga analog watch " /></a></li>
+                <li class="item-name"><a href="" title="Titan raga analog watch for women" >Titan raga analog watch </a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.7,495</span>
+                               
+                </li>
+            </ul>
+          <!--   db.transaction(function(tx,results){
+
+
+
+             select item_name from items where category_id=1;
+
+          });
+           $("#book1").append -->
+
+           
+                    <ul id="book1">
+                <li class="item-img"><!-- <a href="" title="Literature & Fiction" > --><img src="images/books1.jpg" alt="Literature & Fiction" title="Literature & Fiction" /></a></li>
+                <li class="item-name"><!-- <a href="" title="Literature & Fiction" > -->Literature & Fiction</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.350</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="book2">
+                <li class="item-img"><!-- <a href="" title="Entrance exam preparation" > --><img src="images/books2.jpg" alt="Entrance exam preparation"  /></a></li>
+                <li class="item-name"><!-- <a href="" title="Entrance exam preparation" > -->Entrance exam preparation</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 550</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="book3">
+                <li class="item-img"><!-- <a href="" > --><img src="images/books3.jpg" alt="Academic & professional" title="Academic & professional" /></a></li>
+                <li class="item-name"><!-- <a href=".html" title="Academic & professional" > -->Academic & professional</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.500</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="laptop1">
+                <li class="item-img"><a href="" title="HP Pavilion notebook" ><img src="images/laptop1.jpg" alt="HP Pavilion notebook" title="HP Pavilion notebook" /></a></li>
+                <li class="item-name"><a href="" title="HP Pavilion notebook" >HP Pavilion notebook</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 30,500</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="laptop2">
+                <li class="item-img"><a href="" title="Dell vastro laptop" ><img src="images/laptop2.jpg" alt="Dell vastro laptop" title="" /></a></li>
+                <li class="item-name"><a href="" title="Dell vastro laptop" >Dell vastro laptop</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.35,995</span>
+                               
+                </li>
+            </ul>
+
+            <ul id="laptop3">
+                <li class="item-img"><a href="" title="lenovo ultra pro laptops" ><img src="images/laptop3.jpg" alt="lenovo ultra pro laptops" title="lenovo ultra pro laptops" /></a></li>
+                <li class="item-name"><a href="" title="lenovo ultra pro laptops" >lenovo ultra pro laptops</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.48,995</span>
+                               
+                </li>
+            </ul>
+
+             <ul id="phone1">
+                <li class="item-img"><a href="" title="Google nexus 4(black)" ><img src="images/phone5.jpg" alt="lenovo ultra pro laptops" title="Google nexus 4(black)" /></a></li>
+                <li class="item-name"><a href="" title="Google nexus 4(black)" >Google nexus 4(black)</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.48,995</span>
+                               
+                </li>
+            </ul>
+
+             <ul id="phone2">
+                <li class="item-img"><a href="" title="Nokia Lumia 720 " ><img src="images/phone3.jpg" alt="Nokia Lumia 720 " title="Nokia Lumia 720 " /></a></li>
+                <li class="item-name"><a href="" title="Nokia Lumia 720 " > Nokia Lumia 720 </a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.23,499</span>
+                               
+                </li>
+            </ul>
+
+          
+
+              <ul id="tv1">
+                <li class="item-img"><a href="" title="Micromax 20 inches HD LED TV 20M22" ><img src="images/tv1.jpg" alt="Micromax 20 inches HD LED TV 20M22" title="Micromax 20 inches HD LED TV 20M22" /></a></li>
+                <li class="item-name"><a href="" title="Micromax 20 inches HD LED TV 20M22" >Micromax 20 inches HD LED TV 20M22</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.8,810</span>
+                               
+                </li>
+            </ul>
+
+              <ul id="tv2">
+                <li class="item-img"><a href="" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" ><img src="images/tv2.jpg" alt="Samsung galaxy s duos" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" /></a></li>
+                <li class="item-name"><a href="" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" >Living Arts LA TV 19 inch HD Ready LCD AAM19HN</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.6,990</span>
+                               
+                </li>
+            </ul>
+           
+                <div class="blank10"></div>         
+        </div>
+</div>
+
+
+
+
+ <div class="part_footer">
+    <div class="lay_bottom"> 
+    
+    
+
+    <div class="mod-help mod-block">
+  <div class="mod-title"><h3>Help</h3></div>
+    <div class="mod-blank">
+            <dl>
+            <dt><span='html' title="Getting Started" >Getting Started</span></dt>
+                        <dd><a href="" title="User Agreement" >User Agreement</a></dd>
+                        <dd><a href="" title="Create an Account" >Create an Account</a></dd>
+                        <dd><a href="" title="Shopping Process" >Shopping Process</a></dd>
+                        <dd><a href="" title="Best Price Guarantee" >Best Price Guarantee</a></dd>
+                        <dd><a href="" title="Privacy Notice" >Privacy Notice</a></dd>
+                    </dl>
+           
+            <dl>
+            <dt><span='' title="Delivery" rel="nofollow">Delivery</span></dt>
+                        <dd><a href="" title="Delivery" rel="nofollow">Delivery</a></dd>
+                        <dd><a href="" title="Track an Order" rel="nofollow">Track an Order</a></dd>
+                    </dl>
+            <dl>
+            <dt><span='' title="Return" rel="nofollow">Return</span></dt>
+                        <dd><a href="" title="Hassle free Return" rel="nofollow">Hassle free Return</a></dd>
+                    </dl>
+            <dl>
+            <dt><span='' title="Service Center" rel="nofollow">Service Center</span></dt>
+                        <dd><a href="" title="Contact Us" rel="nofollow">Contact Us</a></dd>
+                        <dd><a href="" title="FAQ" rel="nofollow">FAQ</a></dd>
+                    </dl>
+        </div>
+</div>
+    <div class="nav-bottom">
+<div class="mod-blank">
+
+
+
+
+
+
+
+
+
+
+
+    
+</body>
+</html>
+
+

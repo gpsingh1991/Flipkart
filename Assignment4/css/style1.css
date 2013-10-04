@@ -1,0 +1,40 @@
+body, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, legend, input, textarea, select, p, th, td, hr, blockquote { margin:0; padding:0; }
+body, input, button, select, textarea { font:11px/18px   Arial, Helvetica, sans-serif; }/* font reset */
+h1 { font-size:18px; }
+h2 { font-size:16px; }
+h3 { font-size:14px; }
+
+
+
+/* part_container start */
+.part_container{ padding-top:5px;}
+.item-new-list .price-now{font-size:14px;}
+.item-releate .price-now span,.price-shop{font-size:14px;}
+.item-releate .item-name h2{font-size:11px; font-weight:normal;}
+.price-now, .item-history .f1,.price-shop{ color:#DD0300; font-weight:bold;}
+.price-was, .history_market_price{ text-decoration:line-through; color:#454545;}
+.more{ border-bottom:#454545 1px dashed;}
+
+.nav-uHere{ height:30px; line-height:30px; border-top:#e5e5e5 1px dashed; margin-bottom:5px;}
+.nav-uHere .mod-title{ display:none;}
+.list-uHere li{ float:left; margin-right:10px;}
+.list-uHere li a {background: url(images/ic.gif) no-repeat 0px 5px; padding-left: 8px;}
+.part_col-1{ width:190px; float:left; display:inline; margin-right:10px;}
+.part_col-2{  width:760px; float:left;}
+.part_col-2 .part_left{display:inline; float:left; margin-right:10px;}
+.part_col-2 .part_right{ width:190px; float:right;}
+.part_col-3 .part_left{ width:760px; display:inline; float:right; margin-left:10px;}
+.part_col-3 .part_right{ width:190px; float:left;}
+
+/* part_col-1 start */
+
+/*.part_col-1 .mod-title, .mod_categories .mod-title, .part_col-3 .part_right .mod-title, .part_col-2 .part_right .mod-title{ width:190px; font-size:20px; color:#C0C0C0; text-align:center; line-height:26px; font-weight:bold; background:url(C:\Users\Sonan\Desktop\editor\pages\flipkart.com\images\left_tit (1).png) no-repeat; height:22px; margin:0px; border:none;}*/
+.part_col-1 .mod-blank, .part_col-2 .part_right .mod-blank, .part_col-3 .part_right .mod-blank{ border:#37a8a3 1px solid; border-top-width:4px; width:188px; padding:5px 0px; margin-bottom:10px;}
+.part_col-3 .mod-tag-index .mod-blank{ width:168px; padding:10px;}
+.mod_categories dl dd, .nav-siderBar-user dl dd{ border-top:#e5e5e5 1px solid;}
+.mod_categories dl dt, .mod_categories dl dd, .mod-article-index li, .nav-siderBar-user dl dd, .nav-siderBar-user dl dt{ height:22px; text-indent:10px; line-height:22px;}
+.mod_categories dl a{ font-size:12px; color:#000;}
+.mod-article-index li{border-bottom:#e5e5e5 1px solid;}
+.list-article li {position: relative;}
+.part_col-3 .mod-article-index li span{ position:absolute; right:10px;}
+.mod-more{ text-align:right; margin-right:14px; display:block;}

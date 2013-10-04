@@ -1,0 +1,163 @@
+<html><head>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript">
+   
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+// db.transaction(function(tx){
+//     tx.executeSql("create table if not exists items("+"item_id integer primary key,"
+//             + "category_id integer,"
+//             + "image url,"
+//             + "item_name text,"
+//             + "item_cost integer"+")",null,success,logger);
+//           function success(tx){
+//              tx.executeSql('select * from items',[],function(tx,results){
+//               if(results.rows.length==0){
+//                 tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(1,1,"images/books1.jpg","Literature & Fiction",350)');
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(2,1,"images/books2.jpg","Entrance exam preparation",550)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(3,1,"images/books3.jpg","Academic & professional",500)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(4,2,"http://img7a.flixcart.com/www/promos/new/20130822-171144-vis-nav.jpg","Titan steel",2795)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(5,2,"images/watch1.jpeg","Sonata yuva Analog watch",1199)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(6,2,"images/watch2.jpg","sonata fashion fibre",649)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(7,2,"images/watch5.jpeg","Sonata pair analog watch", 2799)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(8,2,"images/watch7.jpeg","Titan raga analog watch",7495)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(9,3,"images/phone5.jpg","Google nexus 4(black)",48995)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(10,3,"images/phone3.jpg","Nokia Lumia 720",23499)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(11,4,"images/laptop1.jpg","HP Pavilion notebook",30500)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(12,4,"images/laptop2.jpg","Dell vastro laptop",35995)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(13,4,"images/laptop3.jpg","lenovo ultra pro laptops",48995)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(14,5,"images/tv1.jpg","Micromax HD LED TV ",8810)',[],success,logger);
+//            tx.executeSql('insert into items(item_id,category_id,image,item_name,item_cost ) values(15,5,"images/tv2.jpg","Living Arts LA TV HD Ready LCD ",6990)',[],success,logger);
+
+//               }
+//               else{
+//                 console.log("category table already exists");
+//               }
+//             });
+
+//           }
+//            function logger(tx, error) {
+//     console.log("Error", error.message);
+//   }
+
+//   });
+
+//    db.transaction(function(tx) {
+//  // tx.executeSql("drop table if exists registration");
+//     tx.executeSql("create table if not exists registration ("
+//       + "userid integer primary key autoincrement,"
+//       + "username text,"
+//       + "lastname text,"
+//       + "password text,"
+//       + "confirmpassword text,"
+//       + "dob Date,"
+//       + "email text,"
+//       + "telephone integer,"
+//       + "address text,"
+//       + "postalcode integer"
+//       + ")",null,null, logger);  
+//    // showRecords();
+//      console.log("done");
+//       function logger(tx, error) {
+//     console.log("Error has occured", error.message);
+//   }
+
+//   });
+
+function display(){
+	db.transaction(function(tx){
+		var cart=window.sessionStorage.getItem("cart");
+		tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+			for(var i=0;i<results.rows.length;i++){
+				var record=results.rows.item(i);
+				var item=record.item_id;
+				var quantity=record.quantity;
+				var price=record.price;
+			
+      tx.executeSql("select * from items where item_id=? ", [item], function(tx, results) {
+     //   $("div").filter("#right").html("");
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          var img=record.image;
+          var cost=record.item_cost;
+         var itemId=record.item_id;
+         
+        var col=$("<tr><td><img width='80px' height='80px' src="+img+"\></td> <td width='160px' height='60px' align=\"center\">"+bookname+"</td><td width='160px' height='60px' align=\"center\">"+quantity+"</td><td width='160px' height='60px' align=\"center\">"+cost+"</td></tr>");
+     //   var col2=$("<tr><td>"+tot+"<td></tr>");
+        $("#tab").append($(col));
+  
+
+
+}
+});
+  }
+    tx.executeSql('select SUM(price) AS total from cartdetails',[],function(tx,results){
+          for(var i=0;i<results.rows.length;i++){
+          	var record=results.rows.item(i);
+          	var tot=record.total;
+          	//alert(tot);
+         
+        //alert(itemId);
+        var col2=$("<tr><td width='80px' height='80px'></td><td width='160px' height='60px'></td><td width='160px' height='60px' align=\"center\">Total =</td><td width='160px' height='60px' align=\"center\">"+tot+"</td></tr>");
+        $("#tab").append($(col2));
+        
+
+     }
+         });
+});
+
+  // tx.executeSql('select SUM(price) AS total from cartdetails',[],function(tx,results){
+  //         for(var i=0;i<results.rows.length;i++){
+  //         	var record=results.rows.item(i);
+  //         	var tot=record.total;
+  //         	alert(tot);
+         
+  //       alert(itemId);
+  //       var col2=$("<tr><td>"+tot+"<td></tr>");
+  //       $("#tab").append($(col2));
+        
+
+  //    }
+  //        });
+
+
+
+});
+
+
+
+
+		
+
+
+}
+
+    
+
+window.onload = function()
+
+{
+	 display();
+ window.localStorage.removeItem("Cart");
+   if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+
+
+  }
+}
+  </script>
+
+</head>
+<body>
+<table border="0" id="tab" >
+	<tr id="r">
+		<th> Image</th>
+		<th> Item name</th>
+		<th> Quantity </th>
+		<th> Amount </th>
+	</tr>
+	</table>
+</body>
+</html
