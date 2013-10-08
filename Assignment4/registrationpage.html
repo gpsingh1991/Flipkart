@@ -39,6 +39,16 @@
                 var emailField = document.getElementById("email");
                 var telephone=document.getElementById("tel");
                 var post=document.getElementById("ptc");
+
+             function validateEmail(email)
+{
+ var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+ if (reg.test(email)){
+ return true; }
+ else{
+ return false;
+ }
+} 
 //                 
 
 
@@ -75,6 +85,26 @@
                   date.focus();
                   return 0;
                 }
+                if(emailField.value=="" || emailField.value==null)
+                {
+                   alert('Please Enter Valid Email Address');
+                   //var email = $('#email').val();
+                   // var email = $('#email').val();
+                  }
+ // if ($.trim(email).length == 0) {
+ // alert('Please Enter Valid Email Address');
+ // return 0;
+ // }
+ if (validateEmail(emailField.value)) {
+ alert('Valid Email Address');
+ 
+ }
+ else {
+ alert('Invalid Email Address');
+ return 0;
+ }
+
+                //}
 
 if(isNaN(telephone.value) || telephone.value==="" || telephone.value<=0)
 {
@@ -126,7 +156,7 @@ if( isNaN(post.value) || post.value===""|| post.value<=0)
  }
  if (validateEmail(email)) {
  alert('Valid Email Address');
- return 0;
+ return 0 ;
  }
  else {
  alert('Invalid Email Address');
@@ -208,19 +238,29 @@ window.onload = function() {
   function $_(selector) {
     return document.querySelector(selector);
   }
+ function redirect(){
+  location.href="login.html";
+ }
+ $_("#log").onclick=function(){
+ location.href="login.html"
+//alert("login is called");
+
+ };
 
   $_("#Login").onclick = function() {
 
-    db.transaction(function(tx) {
-      console.log("running2");
-      tx.executeSql(
-          "insert into registration (username, lastname , password , confirmpassword, dob, email, telephone, address, postalcode ) "
-        + "values (?,?,?,?,?,?,?,?,?)", [$_("#username").value, $_("#names").value, $_("#password").value, $_("#cpassword").value, $_("#dob").value, $_("#email").value, $_("#tel").value, $_("#add").value, $_("#ptc").value],
-        null, logger
-      );
-      console.log("done");
-  validate();
-     var a= validate();
+    var a=validate();
+
+    // db.transaction(function(tx) {
+    //   console.log("running2");
+    //   tx.executeSql(
+    //       "insert into registration (username, lastname , password , confirmpassword, dob, email, telephone, address, postalcode ) "
+    //     + "values (?,?,?,?,?,?,?,?,?)", [$_("#username").value, $_("#names").value, $_("#password").value, $_("#cpassword").value, $_("#dob").value, $_("#email").value, $_("#tel").value, $_("#add").value, $_("#ptc").value],
+    //     null, logger
+    //   );
+    //   console.log("done");
+  //validate();
+    // var a= validate();
      if(a==1)
      {
         insert();
@@ -241,11 +281,18 @@ db.transaction(function(tx) {
       tx.executeSql(
           "insert into registration (username, lastname , password , confirmpassword, dob, email, telephone, address, postalcode ) "
         + "values (?,?,?,?,?,?,?,?,?)", [$_("#username").value, $_("#names").value, $_("#password").value, $_("#cpassword").value, $_("#dob").value, $_("#email").value, $_("#tel").value, $_("#add").value, $_("#ptc").value],
-        null, logger
+       success, logger
       );
+      function success(tx){
+        window.localStorage.setItem(usernameTextBox.value,passwordTextBox.value);
+      //   location.href="login.html";
+        location.href="login.html"
+
+      }
     });
-location.href="login.html"
+
   }
+
   else
         {
            alert("user already exist");
@@ -254,46 +301,22 @@ location.href="login.html"
 });
     });
 
-}
-location.href="login.html";
-}
+
+}//insert ends
+
+}//if(a=1)
+
 else
 {
   location.href="registrationpage.html";
 }
-    });
-  };
 
-  // $_("#population").onkeyup = function(ev) {
-  //   if (ev.keyCode==13) $_("#save").onclick();
-  // };
+  //  });
+  };//login ends
 
-  // $_("#records").onclick = function(ev) {
-  //   if (ev.target.className!="remove") return;
-  //   var recordID = ev.target.id;
-  //   console.log(recordID);
-  //   db.transaction(function(tx) {
-  //     tx.executeSql("delete from registration where id=?", [recordID], null, logger);
-  //     showRecords();
-  //   });
-  // }
+  
 
-  // function showRecords() {
-  //   console.log("db", db);
-  //   html = "";
-  //   db.transaction(function(tx) {
-  //     tx.executeSql("select * from registration", [], function(tx, results) {
-  //       for (var i=0; i<results.rows.length; i++) {
-  //         var record = results.rows.item(i);
-  //         // html+="<button id='"+record.id+"' class='remove'>x</button> "
-  //         //   +record.name+" - "+record.population + "<br/>";
-  //       }
-  //       // $_("#records").innerHTML = html;
-  //     });
-  //   });
-  // }
-
-};
+};//onload ends
 </script>
     </head>
     <body>
@@ -308,7 +331,7 @@ else
                    <div id="wrapper">
                         <div id="login" class="animate form">
                             <form   autocomplete="on"> 
-                                <h1>Log in</h1> 
+                                <h1>Register</h1> 
 
                                 <div class="line"><label for="username">Username *: </label><input type="text" id="username" /></div>
                 <div class="line"><label for="other_names">Other Names *: </label><input type="text" id="names" /></div>
@@ -316,14 +339,21 @@ else
       
                 <div class="line"><label for="surname">Confirm password*: </label><input type="password" id="cpassword" /></div>
                 <div class="line"><label for="dob">Date of Birth <span color="red">*</span>: </label><input type="Date" id="dob" /></div>
-                <div class="line"><label for="email">Email *: </label><input type="email" id="email" onkeydown="validateEmail()"/></div>
+                <div class="line"><label for="email">Email *: </label><input type="email" id="email"/></div>
                 <div class="line"><label for="tel">Telephone: </label><input type="tel"  id="tel" /></div>
                 <div class="line"><label for="add">Address *: </label><input type="text" id="add" /></div>
                 <div class="line"><label for="ptc">Post Code *: </label><input type="text" id="ptc" /></div>
-                <p class="login button"> 
-                                    <input type="submit" value="Login" id="Login" onclick="validate()"/> 
+              <p class="login button"> 
+                          <input type="button" value="Register" id="Login" /> &nbsp;
+                                     <input type="button" value="Login" id="log"/>
                 </p>
+                <!-- <p class="login button"> 
+                                    <input type="submit" value="Login" id="Login"/> 
+                </p>
+                      -->
                                
+                </p>
+
                 </p>
                             </form>
                         </div>

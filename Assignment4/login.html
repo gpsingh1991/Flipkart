@@ -137,7 +137,7 @@
                 //         alert("Incorrect password");
                 //     }
                 // }
-          if(passwordTextBox.value===password && window.localStorage.getItem(usernameTextBox.value)!==null){
+          if(passwordTextBox.value==password && window.localStorage.getItem(usernameTextBox.value)!==null){
             if(window.localStorage.getItem(usernameTextBox.value)===passwordTextBox.value){
               window.sessionStorage.setItem("username",usernameTextBox.value);
               window.sessionStorage.setItem("cart",id);
@@ -227,7 +227,7 @@
                             <form  autocomplete="on"> 
                                 <h1>Log in</h1> 
                                 <p> 
-                                    <label for="username" class="uname" data-icon="u" > Your email or username </label>
+                                    <label for="username" class="uname" data-icon="u" > Your username </label>
                                     <input id="username" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
                                 </p>
                                 <p> 
