@@ -128,6 +128,8 @@ text-align: center;
 var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
 window.onload = function()
 {
+ // $("a").filter("#topcart_total").html("");
+         // $("a").filter("#topcart_total").remove("#topcart_total");
   $(".logout").hide();
   db.transaction(function(tx){
     if (window.sessionStorage.getItem("cart")) {
@@ -138,9 +140,23 @@ window.onload = function()
           for(var i=0;i<results.rows.length;i++){
            var record=results.rows.item(i);
             var ne=record.TOTAL;
+            tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+           if(results.rows.length==0){
+            $("a").filter("#topcart_total").append("Cart(0)").attr("href","#");
+            
+            }
+           else
+           {
+            $("a").filter("#topcart_total").append("Cart("+ne+")").attr("href","cart.html");
+
+           }
+
+         });
+
+
             
           }
-$("a").filter("#topcart_total").append("Cart("+ne+")");
+
 
 
          });
@@ -356,8 +372,9 @@ function logout()
         window.sessionStorage.removeItem("username");
         window.localStorage.removeItem("username");
         window.sessionStorage.removeItem("cart");
-        $("a").filter("#topcart_total").html("");
-        location.href="copy of design page.html";
+        $("a").filter("#topcart_total").remove("#topcart_total");
+       // $("a").filter("#topcart_total").html("");
+        location.href="home.html";
 
 
       }
@@ -371,6 +388,7 @@ function logout()
           var txt=document.getElementById("nameSpanEle");
           txt.innerHTML="welcome " + window.sessionStorage.getItem("username");
           document.getElementsByTagName("div").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+           $("a").filter("#topcart_total").html("");
           display(id);
         }
         else
@@ -378,6 +396,8 @@ function logout()
           alert("please login first to add things to cart!");
           document.getElementById("nameSpanEle").innerHTML="Please login";
          window.sessionStorage.removeItem("username");
+         // $("a").filter("#topcart_total").html("");
+         $("a").filter("#topcart_total").remove("Cart("+ne+")");
           location.href="home.html";
 
 
@@ -415,7 +435,22 @@ function logout()
             var ne=record.TOTAL;
            
           }
-$("a").filter("#topcart_total").append("Cart("+ne+")");
+          tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+           if(results.rows.length==0){
+            $("a").filter("#topcart_total").append("Cart(0)").attr("href","#");
+            
+            }
+           else
+           {
+            $("a").filter("#topcart_total").append("Cart("+ne+")").attr("href","cart.html");
+
+           }
+
+           
+
+
+          });
+
 
 
          });
@@ -528,7 +563,7 @@ else if(cat_id==5){
 
       &nbsp;&nbsp;| &nbsp;&nbsp;</li>
       <li class="logout">
-    <a href="copy of design page.html" onclick="logout()">Logout</a> &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="home.html" onclick="logout()">Logout</a> &nbsp;&nbsp;| &nbsp;&nbsp;
 
       </li>
         <li><a href="" rel="nofollow">Contact Us</a> &nbsp; &nbsp;</li>
