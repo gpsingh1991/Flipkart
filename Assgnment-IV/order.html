@@ -1,0 +1,71 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script type="text/javascript">
+  var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+  
+  window.onload=function(){
+  	function getCurrentFormattedDate()
+        {
+          var currentDateTime = new Date();
+          var currentFormattedDate = currentDateTime.getMonth()+"/"+currentDateTime.getDate()+"/"+currentDateTime.getFullYear();
+          return currentFormattedDate;
+        }
+  	db.transaction(function(tx){
+  		//tx.executeSql("drop table if exist order_details");
+  		tx.executeSql("create table if not exists order_details("+"order_id integer,"
+           + "orderdetails_id integer primary key autoincrement,"
+           + "user_id integer,"
+           + "image url,"
+           + "item_name text,"
+           + "price integer,"
+           + "quantity integer,"
+           + "created_date datetime DEFAULT '"+getCurrentFormattedDate()+"'"
+           +")",null,success,logger);
+            function success(tx){
+      console.log("order details table");
+    }
+    function logger(tx,error){
+      console.log("Error", error.message);
+  }
+  		var cart=window.sessionStorage.getItem("cart"); 
+  		var orderid=window.sessionStorage.getItem("currentOrderId");
+  		tx.executeSql("select * from order_details where order_id=?",[orderid],function(tx,results){
+  			for(var i=0;i<results.rows.length;i++){
+  				var record=results.rows.item(i);
+  				var id=record.orderdetails_id;
+  				var img=record.image;
+  				var name=record.item_name;
+  				var price=record.price;
+  				var quantity=record.quantity;
+  				var col=$("<tr><td><img width='80px' height='80px' src="+img+"\></td><td width='160px' height='60px' align=\"center\">"+name+"</td><td width='160px' height='60px' align=\"center\">"+price+"</td><td width='160px' height='60px' align=\"center\">"+quantity+"</td></tr>");
+  				 $("#tab").append($(col));
+                   }
+  			var col1=$("<tr><td width='80px' height='80px'></td><td  width='160px' height='60px' align=\"center\"><input type=\"button\" value=\"Continue shopping\" class=\"continue_shopping\" onclick=\"continue_shopping()\"></td></tr>");
+
+          $("#tab").append($(col1));
+         });
+
+    });
+}
+  function continue_shopping(){
+  	window.sessionStorage.removeItem("currentOrderId");
+  	location.href="home.html"
+  //	$("a").filter("#topcart_total").remove("#topcart_total");
+  }
+</script>
+
+</head>
+<body>
+<table border="0" id="tab" >
+  <tr id="r">
+  	
+    <th> Image</th>
+    <th> Item name</th>
+    <th> Amount</th>
+    <th> Quantity</th>
+  </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Online shopping only at Flipkart.com</title>
+<link href="css/style33.css" rel="stylesheet" type="text/css" />
+<link href="css/style_home.css" rel="stylesheet" type="text/css"/>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="modal.js"></script>
+
+<script type="text/javascript">
+   
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+window.onload = function()
+{
+  tables_creation();
+  $(".logout").hide();
+  db.transaction(function(tx){
+    if (window.sessionStorage.getItem("cart")) {
+      var cart= window.sessionStorage.getItem("cart");
+         tx.executeSql('select SUM(quantity) AS TOTAL from cartdetails where cart_id=?',[cart],function(tx,results){
+          var ne=0; 
+          //$("a").filter("#topcart_total").html("");
+          for(var i=0;i<results.rows.length;i++){
+           var record=results.rows.item(i);
+            var ne=record.TOTAL;
+            tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+           if(results.rows.length==0){
+            $("a").filter("#topcart_total").append("Cart(0)").attr("href","#");
+            
+            }
+           else
+           {
+            $("a").filter("#topcart_total").append("Cart("+ne+")").attr("href","cart.html");
+
+           }
+
+         });
+
+
+            
+          }
+
+
+
+         });
+        }
+   
+   });
+
+
+ 
+   if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+
+  }
+
+    
+}//onload function
+
+
+
+
+function logout()
+      {
+        window.sessionStorage.removeItem("username");
+        window.localStorage.removeItem("username");
+        window.sessionStorage.removeItem("cart");
+        $("a").filter("#topcart_total").remove("#topcart_total");
+       // $("a").filter("#topcart_total").html("");
+        location.href="home.html";
+
+
+      }
+
+      function addtocart(itemid){
+         var id=itemid;
+       if (window.sessionStorage.getItem("username")!==null && window.sessionStorage.getItem("username")!=="") 
+        {
+        
+          var valu=window.sessionStorage.getItem("username");
+          var txt=document.getElementById("nameSpanEle");
+          txt.innerHTML="welcome " + window.sessionStorage.getItem("username");
+          document.getElementsByTagName("div").innerHTML="Welcome "+window.sessionStorage.getItem("username");
+           $("a").filter("#topcart_total").html("");
+          display(id);
+        }
+        else
+        {
+          alert("please login first to add things to cart!");
+          document.getElementById("nameSpanEle").innerHTML="Please login";
+         window.sessionStorage.removeItem("username");
+         // $("a").filter("#topcart_total").html("");
+         $("a").filter("#topcart_total").remove("Cart("+ne+")");
+          location.href="home.html";
+
+
+        }
+      }//add to cart
+
+         function display(itemid){
+        var id=itemid;
+       var cart=window.sessionStorage.getItem("cart");
+        db.transaction(function(tx){
+        tx.executeSql("select * from items where item_id=?",[itemid],function(tx,results){
+      for(var i=0;i<results.rows.length;i++){
+        var record=results.rows.item(i);
+        var itemid=record.item_id;
+        var price=record.item_cost;
+ tx.executeSql('insert into cartdetails(cart_id,item_id,quantity,price) values(?,?,1,?)',[cart,id,price],success,loggerS);
+ }
+ function success(tx){
+  console.log("done inserting into cart table");
+  cart_display();
+  
+
+ }//success of cartdetails ends here
+ function loggerS(tx,error){
+  console.log("could not insert",error.message)
+}
+ function cart_display(){
+  db.transaction(function(tx){
+    var cart=window.sessionStorage.getItem("cart");
+         tx.executeSql('select SUM(quantity) AS TOTAL from cartdetails where cart_id=?',[cart],function(tx,results){
+          var ne=0;
+           $("a").filter("#topcart_total").html("");
+          for(var i=0;i<results.rows.length;i++){
+            var record=results.rows.item(i);
+            var ne=record.TOTAL;
+           
+          }
+          tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+           if(results.rows.length==0){
+            $("a").filter("#topcart_total").append("Cart(0)").attr("href","#");
+            
+            }
+           else
+           {
+            $("a").filter("#topcart_total").append("Cart("+ne+")").attr("href","cart.html");
+
+           }
+
+           
+
+
+          });
+
+
+
+         });
+       
+          });
+
+ }//cart_display() ends here
+
+
+          });
+        
+      
+        });
+    
+      }//display ends here
+        
+      
+      
+
+  function item(cat_id){
+  db.transaction(function(tx){
+      tx.executeSql("select * from items where category_id=?", [cat_id], function(tx, results) {
+        $("div").filter("#right").html("");
+        for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          var img=record.image;
+          var cost=record.item_cost;
+         var itemId=record.item_id;
+         var vl=$("<ul><li align=\"center\"><img width='60px' height='60px' src="+img+" class=\"item-img\" align=\"center\"><input type=\"button\" class=\"add_to_cart_button\" id=\"addToCartButton"+itemId+"\" onclick=\"addtocart("+itemId+")\" value=\"add to cart\" align=\"center\"></li> <li class=\"item_name\">"+bookname+"</li></li><li class=\"item-price\" align=\"left\"><span class=\"price-now\">"+cost+"</span></li></ul>")
+    $("div").filter("#right").append($(vl));
+ function $_(selector) {
+    return document.querySelector(selector);
+  }
+ 
+if(cat_id==1){
+  $("dd").filter(".books").addClass("selected");
+  $("dd").filter(".watches").removeClass("selected");
+  $("dd").filter(".laptops").removeClass("selected");
+  $("dd").filter(".televisions").removeClass("selected");
+  $("dd").filter(".mobiles").removeClass("selected");
+
+}
+else if(cat_id==2)
+{
+  $("dd").filter(".watches").addClass("selected");
+  $("dd").filter(".books").removeClass("selected");
+  $("dd").filter(".laptops").removeClass("selected");
+  $("dd").filter(".televisions").removeClass("selected");
+  $("dd").filter(".mobiles").removeClass("selected");
+}
+else if(cat_id==3){
+  $("dd").filter(".watches").removeClass("selected");
+  $("dd").filter(".books").removeClass("selected");
+  $("dd").filter(".laptops").removeClass("selected");
+  $("dd").filter(".televisions").removeClass("selected");
+   $("dd").filter(".mobiles").addClass("selected");
+
+}
+else if(cat_id==4){
+  $("dd").filter(".watches").removeClass("selected");
+  $("dd").filter(".books").removeClass("selected");
+  $("dd").filter(".mobiles").removeClass("selected");
+  $("dd").filter(".televisions").removeClass("selected");
+  $("dd").filter(".laptops").addClass("selected");
+
+}
+else if(cat_id==5){
+      $("dd").filter(".watches").removeClass("selected");
+      $("dd").filter(".books").removeClass("selected");
+    $("dd").filter(".laptops").removeClass("selected");
+   $("dd").filter(".mobiles").removeClass("selected");
+  $("dd").filter(".televisions").addClass("selected");
+
+}
+
+}
+
+});
+});
+   $("dd").filter(".books").addClass("selected");
+    $("dd").filter(".watches").removeClass("selected");
+    $("dd").filter(".laptops").removeClass("selected");
+    $("dd").filter(".televisions").removeClass("selected");
+    $("dd").filter(".mobiles").removeClass("selected");
+}//item selection ends here
+
+
+
+   
+ </script>
+
+  
+    </head>
+<body>
+
+
+    <div class="head_top">
+        <div class="top_c">
+
+        <div class="welcome" id="nameSpanEle"></div>
+
+         <div class="top-member-info"> 
+    <ul>
+      <li>
+      </li>
+        <li class="usecenter">
+         
+            <a href="login.html" title="Sign In"  rel="nofollow">Register / Login</a>   
+
+      &nbsp;&nbsp;| &nbsp;&nbsp;</li>
+      <li class="logout">
+    <a href="home.html" onclick="logout()">Logout</a> &nbsp;&nbsp;| &nbsp;&nbsp;
+
+      </li>
+        <li><a href="" rel="nofollow">Contact Us</a> &nbsp; &nbsp;</li>
+    </ul>
+</div> 
+      
+        </div> 
+    </div>
+
+
+
+    <div class="part_main">
+    
+        <div class="part_header"> 
+        
+        <div class="mod-logo">
+  <a href="/"><img src="images/flipkart.png" alt="Flipkart.com: Online Shopping India" title="Online Shopping India | Flipkart.com" class="fk-logo-img"/></a>
+</div>        
+
+<div class="mod-search">
+    <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" class="form-search">
+    <label for="keyword"> </label>
+   
+  
+       
+    </span>
+</div>
+<div class="hot_search">
+            <span style="color:#454545; font-weight:bold" id="nameSpanEle">Online shopping India-Shop online for books,mobile phones,watches & more at flipkart.com</span>
+</div>  
+        <div class="live-help">
+    <ul>
+      
+    </ul>
+</div> 
+
+
+<div class="nav-main">  
+    <ul class="list-nav-main"> 
+    
+                <li  class="list_nav_1" >
+               <img src="images/fkKaro.png"/> <span id="nameSpan"></span> <span class="fk-check  rmargin5"></span> <span>100% original products</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                <li  class="list_nav_2" >
+               <img src="images/fkKaro.png"/><span class="fk-check  rmargin5"></span> <span>Cash On Delivery</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                <li  class="list_nav_3" >
+                <img src="images/fkKaro.png"/><span class="fk-check  rmargin5"></span> <span>Free & Easy Returns</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         </li>
+                
+        </ul>
+</div>
+
+
+
+
+   
+<div class="mod-shoppingCart" >
+<div class="carttitle" id="topcart">
+<a id="topcart_total" class="top_cart_total" href="cart.html" title="Cart" rel="nofollow" ><span></span></a><!-- <ul class="empty_cart"></ul> --></div>
+ 
+</div> 
+         
+        </div> 
+        <div class="part_container">
+        
+            <div class="part_col-1"> 
+             
+        <div class="nav-siderBar nav-siderBar_b mod_categories mod-block">
+    <div class="mod-title"><span>All categories</span></div>
+    <div class="mod-blank">
+        <dl>                
+                <dd class="books" id="fist" onclick="item(1)">books</dd>
+                        <dd class="watches" onclick="item(2)" >Watches</dd>
+                        <dd class="mobiles" onclick="item(3)">Mobiles </dd>
+                        <dd class="laptops" onclick="item(4)">Laptops </dd>
+                    <dd class="televisions" onclick="item(5)">Television</dd>
+                   
+                                </dl>
+    </div>
+</div>
+            
+            </div>
+
+
+
+            <div class="part_col-2"> 
+             
+            <div class="index-flash">
+   <div class="flash-content-img" id="flashs">
+    <ul>
+      <li style="display:block;"><img src="images/flip 730 X300.jpg" /> </li>
+      <li style="display:none;"><img src="images/first1.jpg" /></li>
+      <li style="display:none;"><img src="images/second2.jpg"  /></li>
+      <li style="display:none;"><img src="images/third3.jpg"  /></li>
+     
+    </ul>
+  </div>
+    <div class="notch" id="notch-l-r">
+      <img src="images/notch.png" id="notch-img" style="left:-800px;"/>
+    </div>
+  <div class="flash-content">
+        <ul>
+
+      <div class="clear"></div>
+        </ul>
+   </div>
+</div>
+<script>
+  
+</script>            
+              
+            </div>
+        
+        <div class="clear"></div>
+
+
+ <div class="part_col-3" >
+        
+
+
+
+ <div class="part_left">
+    <div class="item-new-list mod-block bb3">
+   <div class="mod-title">New Items Available</div>
+    <div class="mod-blank" id="right">
+
+
+
+
+                            <ul id="watch1">
+                <li class="item-img"><a href="" title="Titan steel" ><img src="http://img7a.flixcart.com/www/promos/new/20130822-171144-vis-nav.jpg" alt="Titan steel" title="Titan steel" /></a></li>
+                <li class="item-name"><a href="" title="Titan steel" >Titan steel</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs 2,795</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch2">
+                <li class="item-img"><a href="" title="" ><img src="images/watch1.jpeg" alt="Sonata yuva Analog watch" title="Sonata yuva Analog watch" />  <input type="button" id="button" value="add to cart"></a></li>
+                <li class="item-name"><a href="" title="Sonata yuva Analog watch" >Sonata yuva Analog watch</a></li>
+                <li class="item-price"><span class="price-now">Rs.1,199</span>
+
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch3">
+                <li class="item-img"><a href="" title="Sonata fashion fibre" ><img src="images/watch2.jpg" alt="Sonata fashion fibre" title="Sonata fashion fibre" /></a></li>
+                <li class="item-name"><a href="" title="Sonata fashion fibre" >Sonata fashion fibre</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.649</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="watch4">
+                <li class="item-img"><a href="" title="Sonata pair analog watch" ><img src="images/watch5.jpeg"  title="Sonata pair analog watch" /></a></li>
+                <li class="item-name"><a href="" title="Sonata pair analog watch" >Sonata pair analog watch</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 2,799</span>
+                               
+                </li> 
+            </ul>
+           
+                    <ul id="watch5">
+                <li class="item-img"><a href="" title="Titan raga analog watch for women" ><img src="images/watch7.jpeg" alt="Titan raga analog watch for women" title="Titan raga analog watch " /></a></li>
+                <li class="item-name"><a href="" title="Titan raga analog watch for women" >Titan raga analog watch </a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.7,495</span>
+                               
+                </li>
+            </ul>
+      
+
+           
+                    <ul id="book1">
+                <li class="item-img"><img src="images/books1.jpg" alt="Literature & Fiction" title="Literature & Fiction" /></a></li>
+                <li class="item-name">Literature & Fiction</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.350</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="book2">
+                <li class="item-img"><img src="images/books2.jpg" alt="Entrance exam preparation"  /></a></li>
+                <li class="item-name">Entrance exam preparation</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 550</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="book3">
+                <li class="item-img"><img src="images/books3.jpg" alt="Academic & professional" title="Academic & professional" /></a></li>
+                <li class="item-name">Academic & professional</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.500</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="laptop1">
+                <li class="item-img"><a href="" title="HP Pavilion notebook" ><img src="images/laptop1.jpg" alt="HP Pavilion notebook" title="HP Pavilion notebook" /></a></li>
+                <li class="item-name"><a href="" title="HP Pavilion notebook" >HP Pavilion notebook</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs. 30,500</span>
+                               
+                </li>
+            </ul>
+           
+                    <ul id="laptop2">
+                <li class="item-img"><a href="" title="Dell vastro laptop" ><img src="images/laptop2.jpg" alt="Dell vastro laptop" title="" /></a></li>
+                <li class="item-name"><a href="" title="Dell vastro laptop" >Dell vastro laptop</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.35,995</span>
+                               
+                </li>
+            </ul>
+
+            <ul id="laptop3">
+                <li class="item-img"><a href="" title="lenovo ultra pro laptops" ><img src="images/laptop3.jpg" alt="lenovo ultra pro laptops" title="lenovo ultra pro laptops" /></a></li>
+                <li class="item-name"><a href="" title="lenovo ultra pro laptops" >lenovo ultra pro laptops</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.48,995</span>
+                               
+                </li>
+            </ul>
+
+             <ul id="phone1">
+                <li class="item-img"><a href="" title="Google nexus 4(black)" ><img src="images/phone5.jpg" alt="lenovo ultra pro laptops" title="Google nexus 4(black)" /></a></li>
+                <li class="item-name"><a href="" title="Google nexus 4(black)" >Google nexus 4(black)</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.48,995</span>
+                               
+                </li>
+            </ul>
+
+             <ul id="phone2">
+                <li class="item-img"><a href="" title="Nokia Lumia 720 " ><img src="images/phone3.jpg" alt="Nokia Lumia 720 " title="Nokia Lumia 720 " /></a></li>
+                <li class="item-name"><a href="" title="Nokia Lumia 720 " > Nokia Lumia 720 </a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.23,499</span>
+                               
+                </li>
+            </ul>
+
+          
+
+              <ul id="tv1">
+                <li class="item-img"><a href="" title="Micromax 20 inches HD LED TV 20M22" ><img src="images/tv1.jpg" alt="Micromax 20 inches HD LED TV 20M22" title="Micromax 20 inches HD LED TV 20M22" /></a></li>
+                <li class="item-name"><a href="" title="Micromax 20 inches HD LED TV 20M22" >Micromax 20 inches HD LED TV 20M22</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.8,810</span>
+                               
+                </li>
+            </ul>
+
+              <ul id="tv2">
+                <li class="item-img"><a href="" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" ><img src="images/tv2.jpg" alt="Samsung galaxy s duos" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" /></a></li>
+                <li class="item-name"><a href="" title="Living Arts LA TV 19 inch HD Ready LCD AAM19HN" >Living Arts LA TV 19 inch HD Ready LCD AAM19HN</a></li>
+                <li class="item-price">
+                                <span class="price-now">Rs.6,990</span>
+                               
+                </li>
+            </ul>
+           
+                <div class="blank10"></div>         
+        </div>
+</div>
+
+</body>
+</html>
+
+

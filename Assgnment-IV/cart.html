@@ -1,0 +1,216 @@
+<html><head>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript">
+   
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+
+
+function display(){
+
+  db.transaction(function(tx){
+  //tx.executeSql("drop table if exists orders");
+ // tx.executeSql("drop table if exists order_details");
+    var cart=window.sessionStorage.getItem("cart");
+    tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+      for(var i=0;i<results.rows.length;i++){
+        var record=results.rows.item(i);
+        var item=record.item_id;
+        var quantity=record.quantity;
+        var price=record.price;
+      
+      tx.executeSql("select * from items where item_id=? ", [item], function(tx, results) {
+          for (var i=0; i<results.rows.length; i++) {
+          var record = results.rows.item(i);
+          var bookname=record.item_name;
+          var img=record.image;
+          var cost=record.item_cost;
+         var itemId=record.item_id;
+         
+        var col=$("<tr><td><img width='80px' height='80px' src="+img+"\></td> <td width='160px' height='60px' align=\"center\">"+bookname+"</td><td width='160px' height='60px' align=\"center\">"+quantity+"</td><td width='160px' height='60px' align=\"center\">"+cost+"</td></tr>");
+          $("#tab").append($(col));
+         }
+         });
+  }
+    tx.executeSql('select SUM(price) AS total from cartdetails where cart_id=?',[cart],function(tx,results){
+          for(var i=0;i<results.rows.length;i++){
+            var record=results.rows.item(i);
+            var tot=record.total;
+             tx.executeSql("select SUM(quantity) AS QUAN from cartdetails where cart_id=?",[cart],function(tx,results){
+                 for(var i=0;i<results.rows.length;i++){
+                var record=results.rows.item(i);
+                var quantity=record.QUAN;
+                var col2=$("<tr><td width='80px' height='80px'></td><td width='160px' height='60px'><input type=\"button\" class=\"order_button\" value=\"CheckOut\" onclick=\"order("+cart+")\"></td><td width='160px' height='60px' align=\"center\">Total =</td><td width='160px' height='60px' align=\"center\">"+tot+"</td></tr>");
+        $("#tab").append($(col2));
+                   tx.executeSql("select * from orders where order_id=?",[cart],function(tx,results){
+                
+                  tx.executeSql("insert into orders(userid,price,quantity) values(?,?,?)",[cart,tot,quantity],success,logger);
+                       function success(){
+                tx.executeSql("select * from orders ORDER BY order_id DESC",[],function(tx,results){
+               var order_id = results.rows.item(0).order_id;
+                window.sessionStorage.setItem("currentOrderId",order_id);
+                 orderdetails();
+                  });
+         
+               }
+               function logger(tx,error){
+                  console.log("error",error.message);
+                }
+           
+      
+      });
+      }
+    });
+        
+
+ }
+ });
+});
+
+});
+
+}//display ends here
+
+ function order(cart){
+    db.transaction(function(tx) {
+      var cart=window.sessionStorage.getItem("cart");
+      tx.executeSql("delete from cartdetails where cart_id=?", [cart], success_delete, logger_delete);
+      function success_delete(tx){
+        console.log("done deleting");
+        location.href="order.html";
+      }
+      function logger_delete(tx,error){
+        console.log("error",error.message);
+      }
+
+      
+    });
+     
+  
+}
+
+      
+        function orderdetails(){
+          var cart=window.sessionStorage.getItem("cart");
+          var count=0;
+          var orderid=window.sessionStorage.getItem("currentOrderId");
+          db.transaction(function(tx){
+            tx.executeSql("select * from cartdetails where cart_id=?",[cart],function(tx,results){
+              for (var i=0;i<results.rows.length;i++){
+                var record=results.rows.item(i);
+                var item=record.item_id;
+                var quantity=record.quantity;
+                var price=record.price;
+                tx.executeSql("select * from items where item_id=?",[item],function(tx,results){
+                  for(var i=0;i<results.rows.length;i++){
+                    var rec=results.rows.item(i);
+                    var img=rec.image;
+                    var name=rec.item_name;
+                    var cost=rec.item_cost
+             
+                          tx.executeSql("insert into order_details(order_id,user_id,image,item_name,price,quantity) values(?,?,?,?,?,?)",[orderid,cart,img,name,cost,quantity],success,logger);
+                  function success(tx){
+                    console.log("inserted into order details");
+                    
+                   
+                  
+                  }
+                  function logger(tx,error){
+                    console.log("error",error.message);
+                  }
+
+                   
+                      }
+                      });
+                    }
+                  });
+           
+
+          });
+        }//orderdetails ends here
+
+
+
+
+
+
+    
+
+window.onload = function()
+
+{
+  db.transaction(function(tx){
+    function getCurrentFormattedDate()
+        {
+          var currentDateTime = new Date();
+          var currentFormattedDate = currentDateTime.getMonth()+"/"+currentDateTime.getDate()+"/"+currentDateTime.getFullYear();
+          return currentFormattedDate;
+        }
+           tx.executeSql("create table if not exists items("+"item_id integer primary key,"
+            + "category_id integer,"
+            + "image url,"
+            + "item_name text,"
+            + "item_cost integer"+")",null,success,logger);
+           function success(tx){
+
+            console.log("success");
+          }
+           function logger(tx,error){
+            console.log("error",error.message);
+          }
+             tx.executeSql("create table if not exists order_details("+"order_id integer,"
+           + "orderdetails_id integer primary key autoincrement,"
+           + "user_id integer,"
+           + "image url,"
+           + "item_name text,"
+           + "price integer,"
+           + "quantity integer,"
+           + "created_date datetime DEFAULT '"+getCurrentFormattedDate()+"'"
+           +")",null,success,logger);
+            function success(tx){
+      console.log("order details table");
+    }
+    function logger(tx,error){
+      console.log("Error", error.message);
+  }
+    tx.executeSql("create table if not exists orders("+"order_id integer primary key autoincrement,"
+           + "userid integer,"
+           + "price integer,"
+           + "quantity integer,"
+           + "created_date datetime DEFAULT '"+getCurrentFormattedDate()+"'"
+           +")",null,success_o,logger_o);
+   
+    function success_o(tx){
+      console.log("order table");
+    }
+    function logger_o(tx,error){
+      console.log("Error", error.message);
+  }
+
+
+
+  });
+   
+   display();
+ 
+   if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+
+
+  }
+}
+  </script>
+
+</head>
+<body>
+<table border="0" id="tab" >
+  <tr id="r">
+    <th> Image</th>
+    <th> Item name</th>
+    <th> Quantity </th>
+    <th> Amount </th>
+  </tr>
+  </table>
+</body>
+</html>

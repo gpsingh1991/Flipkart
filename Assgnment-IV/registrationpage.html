@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+ <html lang="en" class="no-js"> 
+    <head>
+        <meta charset="UTF-8" />
+        
+        <title>Login and Registration Form with HTML5 and CSS3</title>
+        
+        <!-- <link rel="shortcut icon" href="../favicon.ico">  -->
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/animate-custom.css" /> -->
+       <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+             <script type="text/javascript">
+             var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+          
+
+             
+             function validateEmail(email)
+{
+ var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+ if (reg.test(email)){
+ return true; }
+ else{
+ return false;
+ }
+} 
+
+
+             function validate(){
+               
+                var username=document.getElementById("username").value;
+                var lastname=document.getElementById("names").value;
+                var password=document.getElementById("password").value;
+                var confirm_password=document.getElementById("cpassword").value;
+                var date=document.getElementById("dob");
+                var emailField = document.getElementById("email");
+                var passedValidation = true;
+                var emailField = document.getElementById("email");
+                var telephone=document.getElementById("tel");
+                var post=document.getElementById("ptc");
+
+             function validateEmail(email)
+{
+ var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+ if (reg.test(email)){
+ return true; }
+ else{
+ return false;
+ }
+} 
+
+                var range=4;
+                if(username.value==""){
+                    alert("enter a valid username!");
+                    return 0;
+                    
+                  }
+                
+                if(username.length<5)
+                {
+                  alert("username should have minimum 5 characters!");
+                  return 0;
+
+                }
+                if(lastname.length==""){
+                  alert("username should have minimum 5 characters!");
+                  return 0;
+
+                }
+                if(password=="" || password.length<4){
+                    alert("enter a valid password!");
+                    return 0;
+                }
+                 if(confirm_password=="" ||confirm_password!=password){
+                    alert("password does not match!");
+                    return 0;
+                }
+                if(date.value=="" || date.value==null)
+                {
+                  alert("enter a valid date");
+                  date.focus();
+                  return 0;
+                }
+                if(emailField.value=="" || emailField.value==null)
+                {
+                   alert('Please Enter Valid Email Address');
+                   
+                  }
+ 
+ if (validateEmail(emailField.value)) {
+ alert('Valid Email Address');
+ 
+ }
+ else {
+ alert('Invalid Email Address');
+ return 0;
+ }
+
+                
+
+if(isNaN(telephone.value) || telephone.value==="" || telephone.value<=0)
+{
+alert("please enter the telephone number");
+telephone.focus();
+return 0;
+}
+if( isNaN(post.value) || post.value===""|| post.value<=0)
+{
+  alert("please enter a valid postalcode");
+  post.focus();
+  return 0;
+}
+
+ return 1;
+
+}
+    
+var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+window.onload = function() {
+  if (!window.openDatabase) {
+    status("Database not supported");
+    return;
+  }
+  db.transaction(function(tx) {
+ 
+    tx.executeSql("create table if not exists registration ("
+      + "userid integer primary key autoincrement,"
+      + "username text,"
+      + "lastname text,"
+      + "password text,"
+      + "confirmpassword text,"
+      + "dob Date,"
+      + "email text,"
+      + "telephone integer,"
+      + "address text,"
+      + "postalcode integer"
+      + ")",null,success, logger);  
+   
+     console.log("done");
+  });
+  function success(tx){
+    var db = window.openDatabase("flipkart", "1.0", "flipkart", 1000000);
+
+  }
+
+  
+  function logger(tx, error) {
+    console.log("Error", error.message);
+  }
+  function logArguments() {
+    console.log(arguments);
+  }
+  function $_(selector) {
+    return document.querySelector(selector);
+  }
+ function redirect(){
+  location.href="login.html";
+ }
+ $_("#log").onclick=function(){
+ location.href="login.html"
+
+
+ };
+
+  $_("#Login").onclick = function() {
+
+    var a=validate();
+
+  
+     if(a==1)
+     {
+        insert();
+     
+      
+      function insert(){
+
+     var usernameTextBox = document.getElementById("username");
+        var passwordTextBox = document.getElementById("password");
+
+         db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql("select * from registration where username=?" ,[usernameTextBox.value], function(tx, results) {
+        if(results.rows.length==0)
+        {
+db.transaction(function(tx) {
+      console.log("running2");
+      tx.executeSql(
+          "insert into registration (username, lastname , password , confirmpassword, dob, email, telephone, address, postalcode ) "
+        + "values (?,?,?,?,?,?,?,?,?)", [$_("#username").value, $_("#names").value, $_("#password").value, $_("#cpassword").value, $_("#dob").value, $_("#email").value, $_("#tel").value, $_("#add").value, $_("#ptc").value],
+       success, logger
+      );
+      function success(tx){
+        window.localStorage.setItem(usernameTextBox.value,passwordTextBox.value);
+     
+        location.href="login.html"
+
+      }
+    });
+
+  }
+
+  else
+        {
+           alert("user already exist");
+        }
+
+});
+    });
+
+
+}//insert ends
+
+}//if(a=1)
+
+else
+{
+  //location.href="registrationpage.html";
+}
+
+  //  });
+  };//login ends
+
+  
+
+};//onload ends
+</script>
+    </head>
+    <body>
+        <div class="container">
+         
+            <div class="codrops-top">
+               
+                <div class="clr"></div>
+            </div> 
+            <section>       
+                <div id="container_demo" >
+                   <div id="wrapper">
+                        <div id="login">
+                            <form   autocomplete="on"> 
+                                <h1>Register</h1> 
+
+                                <div class="line"><label for="username">Username *: </label><input type="text" id="username" /></div>
+                <div class="line"><label for="other_names">Other Names *: </label><input type="text" id="names" /></div>
+                <div class="line"><label for="password">Password *: </label><input type="password" id="password" /></div>
+      
+                <div class="line"><label for="surname">Confirm password*: </label><input type="password" id="cpassword" /></div>
+                <div class="line"><label for="dob">Date of Birth <span color="red">*</span>: </label><input type="Date" id="dob" /></div>
+                <div class="line"><label for="email">Email *: </label><input type="email" id="email"/></div>
+                <div class="line"><label for="tel">Telephone: </label><input type="tel"  id="tel" /></div>
+                <div class="line"><label for="add">Address *: </label><input type="text" id="add" /></div>
+                <div class="line"><label for="ptc">Post Code *: </label><input type="text" id="ptc" /></div>
+              <p class="login button"> 
+                          <input type="button" value="Register" id="Login" /> &nbsp;
+                                     <input type="button" value="Login" id="log"/>
+                </p>
+             
+                               
+                </p>
+
+                </p>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>  
+            </section>
+        </div>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
