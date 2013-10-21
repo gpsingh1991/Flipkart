@@ -1,0 +1,184 @@
+<html>
+<head>
+	<title>
+	</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link href="bootstrap.css" rel="stylesheet" type="text/css">
+	  <script src="bootstrap.min.js"></script> 
+
+	  <script type="text/javascript">
+	   var db=window.openDatabase("superstore","1.0","superstore",1000000);
+	  function redirect()
+	  {
+	  	location.href="trial.html";
+	  }
+	  </script>
+	 <!-- <script src="css/bootstrap-dropdown.js"></script> -->
+	<style type="text/css">
+	.navbar-inner {
+
+padding-right: 20px;
+padding-left: 30px;
+font-size: 18px;
+
+}
+	body{
+	background: url(http://www.xhtmlcssexpert.com/media/images/cbg.jpg) top center;
+	background-position:42% center;
+	width:1000px;
+	/*margin-left:1000px;*/
+	min-width:490px;
+}
+.header {
+	border-top: 0px;
+	padding-top: 0px;
+margin-left: 210;
+/*margin-right: 100px;*/
+/*position: fixed;*/
+width: 930;
+height: 120px;
+/*margin-bottom: 15px;*/
+/*padding-top: 15px;*/
+background-color: black;
+/*background: url(http://blogwhatdesign.com/wp-content/themes/bwd/images/header/bg.png);*/
+z-index: 95;
+}
+.main {
+position: relative;
+width: 1100px;
+/*margin: 0 auto;*/
+}
+.title a {
+display: block;
+width: 600;
+margin-left: 100px;
+height: 91px;
+background: url(x102013-2234.png) no-repeat center top;
+background-size: 100%;
+text-indent: -9999px;
+}
+.title {
+float: left;
+margin-right: 20px;
+clear: none;
+}
+h1{
+	font-size: :40px;
+}
+body{
+	background: url(http://www.xhtmlcssexpert.com/media/images/cbg.jpg) top center;
+	background-position:42% center;
+	width:1000px;
+	/*margin-left:1000px;*/
+	min-width:490px;
+}
+.span11 {
+width: 915px;
+}
+.offset2 {
+margin-left: 215px;
+}
+.btn-group {
+margin-left: 250px;
+margin-top: 80px;
+position: relative;
+display: inline-block;
+font-size: 0;
+white-space: nowrap;
+vertical-align: middle;
+}
+
+
+	</style>
+</head>
+<body>
+		<header id="header" class="header" role="banner">
+		<div class="main">
+			<h1 class="title"> <div class="pervious"></div>
+				<a href="#"></a> </h1>
+		</div>
+	</header>
+	<!-- navigation bar begins -->
+	<div class="container1">
+<nav>
+	<div class="navbar  offset2 span11">
+  <div class="navbar-inner">
+ <!--    <a class="brand" href="#">Home</a> -->
+    <ul class="nav">
+    	<!-- adding user -->
+      <li class="dropdown"><a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">User <b class="caret"></b></a>
+    
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  	<li role="presentation"><a href="Add user.html" role="menuitem" tabindex="-1"> Adduser</a></li>
+  		<li role="presentation"><a role="menuitem" tabindex="-1"> Viewuser</a></li>
+
+   </ul>
+</li>
+<!-- adding dealer -->
+<li class="dropdown"><a class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#" href="#">Dealer <b class="caret"></b></a>
+    
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> View dealer</a></li>
+  		<li role="presentation"><a href="home.html" role="menuitem" tabindex="-1" > Add dealer</a></li>
+
+   </ul>
+</li>
+<!-- roles -->
+<li class="dropdown"><a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Roles <b class="caret"></b></a>
+    
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> View roles</a></li>
+  		<li role="presentation"><a href="home.html" role="menuitem" tabindex="-1" > Assign roles</a></li>
+
+   </ul>
+</li>
+<!-- tax  and commission -->
+<li><a href="#">Add tax/Commission</a></li>
+
+<!-- data entry operator -->
+<li class="dropdown"><a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Data Entry operator<b class="caret"></b></a>
+    
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> Add Category</a></li>
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> Add Product</a></li>
+  	<li role="presentation"><a href="home.html" role="menuitem" tabindex="-1" > Add Batch</a></li>
+
+   </ul>
+</li>
+
+<!-- billing operator -->
+<li class="dropdown"><a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Billing operator<b class="caret"></b></a>
+    
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> add items for purchase</a></li>
+  	<li role="presentation"><a role="menuitem" tabindex="-1"> Add customer details</a></li>
+  	<li role="presentation"><a href="home.html" role="menuitem" tabindex="-1" > Generate bill</a></li>
+
+   </ul>
+</li>
+
+
+
+      <!-- <li><a href="#">View Reports</a></li> -->
+      <!-- <li><a href="#">Link</a></li> -->
+    </ul>
+  </div>
+</div>
+
+
+
+</nav>
+</div>
+<div class="btn-group ">
+  <button class="btn btn-Inverse"><a href="trial.html">Home page</a></button>
+   </div> 
+   <div class="btn-group ">
+  <button class="btn btn-Success">View reports</button>
+   </div> 
+   <div class="btn-group">
+  <button class="btn btn-Danger" onclick="redirect()">Logout</button>
+</div>
+	
+</body>
+</html>

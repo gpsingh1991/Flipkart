@@ -1,0 +1,161 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link href="bootstrap.css" rel="stylesheet" type="text/css">
+	  <script src="bootstrap.min.js"></script>
+	<script type="text/javascript">
+	window.onload=function(){
+		var db=window.openDatabase("superstore","1.0","superstore",1000000);
+		db.transaction(function(tx){
+			tx.executeSql("select * from user",[],function(tx,results){
+             for(var i=0;i<results.rows.length;i++){
+             	var rec=results.rows.item(i);
+             	var id=rec.user_id;
+             	var name=rec.username;
+             	var password=rec.password;
+             	var new_row=$("<tr><td >"+id+"</td><td align=\"center\">"+name+"</td><td align=\"center\">"+password+"</td><td id=\"edit"+id+"\" onclick=\"call("+id+")\"><a href=\"edituser.html\">edit</a> </td><td> X </td></tr>");
+             	$(".tab").append($(new_row));
+
+             	
+
+             }
+
+			})
+
+
+		});
+	}
+	function call(id)
+	{
+		alert(id);
+		var userid=id;
+		window.localStorage.setItem("id",userid);
+	}
+
+</script>
+	<style type="text/css">
+	body, button, input, select, textarea {
+color: #664c3e;
+font-family: "museo-sans", sans-serif;
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+/*font-size: 1.6rem;*/
+line-height: 1.4;
+}
+
+.header {
+	border-top: 0px;
+	padding-top: 0px;
+margin-left: 210;
+/*margin-right: 100px;*/
+/*position: fixed;*/
+width: 930;
+height: 120px;
+margin-bottom: 15px;
+/*padding-top: 15px;*/
+background-color: black;
+/*background: url(http://blogwhatdesign.com/wp-content/themes/bwd/images/header/bg.png);*/
+z-index: 95;
+}
+.main {
+position: relative;
+width: 1100px;
+margin: 0 auto;
+}
+.title {
+float: left;
+margin-right: 20px;
+clear: none;
+}
+h1{
+	font-size: :40px;
+}
+body{
+	background: url(http://www.xhtmlcssexpert.com/media/images/cbg.jpg) top center;
+	background-position:42% center;
+	width:1000px;
+	/*margin-left:1000px;*/
+	min-width:490px;
+}
+.title a {
+display: block;
+width: 600;
+margin-left: 100px;
+height: 91px;
+background: url(x102013-2234.png) no-repeat center top;
+background-size: 100%;
+text-indent: -9999px;
+}
+#img {
+padding-top: 80px;
+/*width: 960px;*/
+padding-left: 150px;
+
+}
+
+#form {
+padding-top: 33px;
+padding-left: 33px;
+width: 300px;
+float: right;
+margin-right: 10px;
+/*height: 40%;*/
+background: rgb(247, 247, 247);
+/*margin: 0 190 200 100;*/
+-webkit-border-radius: 30px;
+}
+#label{
+	color: rgb(64, 92, 96);
+position: relative;
+text-align: center;
+}
+#wrapper p{
+	margin-bottom: 15px;
+	text-align: center;
+}
+p.login{
+	text-align: center;
+margin: 3px 0;
+}
+.tabl{
+	margin-left: 500px;
+}
+/*.pervious{
+	display: block;
+width: 500px;
+height: 91px;
+background: url(x18.png) no-repeat;	
+background-size: 100%;
+text-indent: -9999px;
+}*/
+	</style>
+</head>
+<body>
+	<header id="header" class="header" role="banner">
+		<div class="main">
+			<h1 class="title"> <div class="pervious"></div>
+				<a href="#">Super Store</a> </h1>
+		</div>
+	</header>
+	<div class="tabl">
+	<table class="table table-striped">
+		<tr>
+			<thead>
+				<td> id</td>
+				<td> username </td>
+				<td> password</td>
+
+
+			</thead>
+			<tbody class="tab">
+			</tbody>
+		</tr>
+
+  
+</table>
+	</div>
+	
+</body>
+</html>
